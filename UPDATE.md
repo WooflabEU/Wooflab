@@ -4,10 +4,10 @@ This export continues the existing `master` branch of
 [WooflabEU/Wooflab](https://github.com/WooflabEU/Wooflab). Keep the current Git
 repository and its history. The ZIP is a complete source export, not a patch.
 
-Version 1.1.1 makes the slideshow's theme global, including `/guestbook/`, the
-legal pages, authentication callback, 404 page and tool dialogs. Copy the whole
-updated source, including `src/theme.css`, `src/styles.css`, `src/site-shell.js`
-and every HTML page. Replacing only `index.html` will not apply the global theme.
+Version 1.2.0 adds the Woof pack sharing flow and direct public pawprint links,
+while retaining the global theme on every page. Copy the whole updated source,
+including `guestbook/index.html`, all of `src/` and the updated tests and docs.
+Replacing only `index.html` will not apply the guestbook feature.
 
 ## 1. Prepare the current clone
 
@@ -50,13 +50,18 @@ Open the local URL printed by Vite. Check all five scenes, the two tools, mobile
 navigation, Motion off, and the guestbook. X sign-in should also be checked on
 the production domain because Supabase requires an allowed callback URL.
 
+After posting a note, check Share on X, Copy link and Write another note. Open
+the copied URL while signed out and confirm it shows the exact public note.
+The share text uses the production domain even during local development. See
+[Woof pack sharing](docs/SHARING.md). The existing SQL does not need to be rerun.
+
 ## 3. Review and commit
 
 ```sh
 git diff --stat
 git add -- index.html src package.json package-lock.json vite.config.js scripts test README.md DEPLOYMENT.md UPDATE.md CHANGELOG.md THIRD_PARTY_NOTICES.md docs .github .gitignore licenses
 git diff --cached --stat
-git commit -m "🐾 Woof! Give every page the same fresh coat"
+git commit -m "🐾 Woof! Let the pack share their pawprints"
 git push origin master
 ```
 

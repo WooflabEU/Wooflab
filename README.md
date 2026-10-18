@@ -29,6 +29,8 @@ dog with a weakness for snacks and a habit of sitting on the keyboard.
 - **Focus Fetch:** a small focus timer with start, pause, and reset controls.
 - **Idea Fetch:** a generator for the next small thing to make.
 - A public guestbook with X OAuth 2.0 sign-in through Supabase.
+- A Woof pack confirmation after posting, with Share on X, Copy link, and
+  direct public links to individual pawprints. See [sharing](docs/SHARING.md).
 - Responsive WebP illustrations, self-hosted fonts, and static HTML pages.
 
 Everyone can read guestbook comments. Signed-in X users can post and remove

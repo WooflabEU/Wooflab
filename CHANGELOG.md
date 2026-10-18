@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 — 2026-10-19
+
+- Added the Woof pack success card after a confirmed guestbook post.
+- Added an optional X composer with the exact pack message and direct post link.
+- Added Copy link, clipboard fallback and Write another note actions.
+- Added public note URLs that work independently of feed pagination.
+- Added missing-note, malformed-link and retry states with safe text rendering.
+- Kept sharing tied to the correct account and protected newer drafts during delayed saves.
+- Added integration tests for the guestbook flow; all 56 tests pass.
+- Kept the existing Supabase migration and authentication credentials unchanged.
+
 ## 1.1.1 — 2026-10-18
 
 - Made the slideshow's ink, warm white and lime palette the default global theme.

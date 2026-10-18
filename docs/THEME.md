@@ -38,7 +38,7 @@ and native color scheme. Secondary pages use the default global dark theme.
 
 ## Checks and limitations
 
-The delivery passed 33 automated tests, the Vite production build and checks for
+The delivery passed 56 automated tests, the Vite production build and checks for
 all six generated pages. The page checker verifies that every route loads the
 same global stylesheet and browser theme color. Shared navigation tests cover
 all six pages; existing tool, slideshow, comment-preview and isolated database

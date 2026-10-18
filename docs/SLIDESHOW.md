@@ -55,7 +55,7 @@ permissions and original public configuration are retained.
 
 ## Verification
 
-The delivered source passed 33 Node tests, a production Vite build, and the
+The delivered source passed 56 Node tests, a production Vite build, and the
 generated-page checks. Tests include isolated database authorization, timer
 behavior, scene navigation, reduced-motion changes, delayed imports, lazy
 comment loading, and safe rendering of visitor text. Build checks also enforce

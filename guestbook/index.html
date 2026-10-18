@@ -11,11 +11,31 @@
       <div id="auth-loading"><p class="muted">Getting the welcome mat ready…</p></div>
       <div id="auth-offline" hidden><p>The guestbook is opening soon.</p><p class="small-note">Byte is getting the welcome mat ready. Come back for a chat.</p><a class="text-link" href="/">Explore the lab <span aria-hidden="true">↗</span></a></div>
       <div id="auth-signed-out" hidden><p>Everyone can read the guestbook. Sign in with X to leave your own note.</p><button type="button" class="button button-dark button-full" id="sign-in"><span class="x-mark" aria-hidden="true">𝕏</span> Sign in with X <span aria-hidden="true">↗</span></button><p class="small-note">Your name, X handle and profile picture appear with your public comment.</p></div>
-      <div id="auth-signed-in" hidden><div class="signed-in-user"><span class="avatar" id="current-avatar" aria-hidden="true"></span><div><strong id="current-name"></strong><span id="current-handle" class="muted"></span></div><button type="button" class="quiet-button" id="sign-out">Sign out</button></div><p class="admin-notice" id="admin-notice" hidden>You’re the keeper of this guestbook. You can remove any note.</p><form id="comment-form"><label for="comment-body">Your note to the lab</label><textarea id="comment-body" name="comment" maxlength="1000" rows="6" required placeholder="Hey Byte, here's an idea…" aria-describedby="comment-count comment-disclosure"></textarea><div class="character-count"><span>Be kind. Stay curious.</span><span id="comment-count">0 / 1000</span></div><p class="small-note" id="comment-disclosure">This note is public and stays here after you sign out. You can delete your own notes.</p><button class="button button-dark button-full" type="submit" id="post-comment">Leave a pawprint <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></button></form></div>
+      <div id="auth-signed-in" hidden><div class="signed-in-user"><span class="avatar" id="current-avatar" aria-hidden="true"></span><div><strong id="current-name"></strong><span id="current-handle" class="muted"></span></div><button type="button" class="quiet-button" id="sign-out">Sign out</button></div><p class="admin-notice" id="admin-notice" hidden>You’re the keeper of this guestbook. You can remove any note.</p><form id="comment-form"><label for="comment-body">Your note to the lab</label><textarea id="comment-body" name="comment" maxlength="1000" rows="6" required placeholder="Hey Byte, here's an idea…" aria-describedby="comment-count comment-disclosure"></textarea><div class="character-count"><span>Be kind. Stay curious.</span><span id="comment-count">0 / 1000</span></div><p class="small-note" id="comment-disclosure">This note is public and stays here after you sign out. You can delete your own notes.</p><button class="button button-dark button-full" type="submit" id="post-comment">Leave a pawprint <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></button></form>
+        <section class="pack-success" id="pack-success" aria-labelledby="pack-success-title" hidden>
+          <span class="pack-success-icon" aria-hidden="true"><svg><use href="/icons.svg#paw"></use></svg></span>
+          <p class="eyebrow">PAWPRINT LEFT</p>
+          <h3 id="pack-success-title" tabindex="-1">You’re in the Woof pack!</h3>
+          <p>Your pawprint is live. Give the pack a little woof.</p>
+          <pre class="pack-share-preview" id="pack-share-preview"></pre>
+          <a class="button button-dark button-full" id="share-on-x" target="_blank" rel="noopener noreferrer">Share on X <span aria-hidden="true">↗</span></a>
+          <div class="pack-secondary-actions"><button type="button" class="button button-outline" id="copy-pawprint-link">Copy link</button><button type="button" class="quiet-button" id="write-another-note">Write another note</button></div>
+          <label class="small-note pack-copy-label" id="pack-copy-label" for="pack-copy-link" hidden>Your public pawprint link</label>
+          <input class="pack-copy-link" id="pack-copy-link" type="url" readonly aria-describedby="pack-share-status" hidden>
+          <p class="small-note" id="pack-share-status" role="status" aria-live="polite"></p>
+        </section>
+      </div>
       <p id="composer-status" class="form-status" role="status" aria-live="polite"></p>
       <a class="composer-rules" href="/terms/">A few house rules <span aria-hidden="true">↗</span></a>
     </aside>
-    <section class="notes-section" aria-labelledby="notes-title"><div class="notes-heading"><h2 id="notes-title">Notes from the internet<span>.</span></h2><button class="quiet-button" id="refresh-notes" type="button">Refresh <span aria-hidden="true">↻</span></button></div><p id="feed-status" class="feed-status" role="status" aria-live="polite">Fetching the latest pawprints…</p><div id="comments-list" class="comments-list" aria-busy="true"></div><button class="button button-outline load-more" id="load-more" type="button" hidden>More pawprints <span aria-hidden="true">↓</span></button><noscript><p>Turn on JavaScript to read the guestbook and sign in with X.</p></noscript></section>
+    <section class="notes-section" aria-labelledby="notes-title">
+      <section class="linked-note-panel" id="linked-note-panel" aria-labelledby="linked-note-title" hidden>
+        <div class="linked-note-heading"><p class="eyebrow" id="linked-note-title">A PAWPRINT FROM THE PACK</p><a class="quiet-button" href="/guestbook/">All pawprints <span aria-hidden="true">↗</span></a></div>
+        <p class="feed-status" id="linked-note-status" role="status" aria-live="polite"></p>
+        <div id="linked-note-content"></div>
+        <button class="quiet-button" type="button" id="retry-linked-note" hidden>Try again <span aria-hidden="true">↻</span></button>
+      </section>
+      <div class="notes-heading"><h2 id="notes-title">Notes from the internet<span>.</span></h2><button class="quiet-button" id="refresh-notes" type="button">Refresh <span aria-hidden="true">↻</span></button></div><p id="feed-status" class="feed-status" role="status" aria-live="polite">Fetching the latest pawprints…</p><div id="comments-list" class="comments-list" aria-busy="true"></div><button class="button button-outline load-more" id="load-more" type="button" hidden>More pawprints <span aria-hidden="true">↓</span></button><noscript><p>Turn on JavaScript to read the guestbook and sign in with X.</p></noscript></section>
   </div>
 </main>
 <!-- partial:footer -->

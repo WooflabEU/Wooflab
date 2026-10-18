@@ -10,20 +10,21 @@ export function toast(message) {
   toastTimeout = setTimeout(() => { target.hidden = true; }, 4200);
 }
 
-export function create(tag, className, text) {
-  const element = document.createElement(tag);
+export function create(tag, className, text, ownerDocument = document) {
+  const element = ownerDocument.createElement(tag);
   if (className) element.className = className;
   if (text !== undefined) element.textContent = text;
   return element;
 }
 
 export function fillAvatar(target, profile) {
+  const ownerDocument = target.ownerDocument;
   const name = profile?.display_name || 'X member';
   const initials = name.trim().split(/\s+/).slice(0, 2).map(word => Array.from(word)[0] || '').join('').toUpperCase();
-  target.replaceChildren(document.createTextNode(initials || 'X'));
+  target.replaceChildren(ownerDocument.createTextNode(initials || 'X'));
   const safeUrl = safeAvatarUrl(profile?.avatar_url);
   if (!safeUrl) return;
-  const img = create('img');
+  const img = create('img', '', undefined, ownerDocument);
   img.src = safeUrl;
   img.alt = '';
   img.loading = 'lazy';
