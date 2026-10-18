@@ -1,0 +1,37 @@
+{
+  "repository": "https://github.com/BOT-TI/wooflab",
+  "base_commit": "6f1e49c0db94fe0c0cbd556897efbe3e696c1b97",
+  "version": "1.0.0",
+  "files": [
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/feature_request.yml",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "DEPLOYMENT.md",
+    "README.md",
+    "SECURITY.md",
+    "docs/SETUP.fi.md",
+    "docs/SETUP.md",
+    "package-lock.json",
+    "package.json"
+  ],
+  "patch_sha256": "d0476a68a1c8a0151c579d91ce6add1e761b29a928b957613aec47452f72d1ac",
+  "validation": {
+    "tests_passed": 15,
+    "build": "passed",
+    "project_check": "passed",
+    "documentation_links": "passed: 33 local links",
+    "workflow_yaml": "passed",
+    "combined_patch_application": "passed against the original main tree",
+    "english_incremental_patch_application": "passed on the previous update with CRLF line endings",
+    "application_checks": "15 tests, production build, and page checks passed for the preceding update; this amendment changes documentation only"
+  },
+  "production_config_changed": false,
+  "dependencies_changed": false,
+  "remote_updated": false,
+  "default_language": "en",
+  "default_deployment_guide": "DEPLOYMENT.md",
+  "english_incremental_patch_sha256": "b7beb736e781a4d34996d4306f9ca5fb6f5ce66d2c30f81d99fdc0429da09843"
+}

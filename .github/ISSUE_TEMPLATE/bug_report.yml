@@ -1,0 +1,40 @@
+name: Bug report
+description: Report a reproducible problem with WoofLab.
+body:
+  - type: markdown
+    attributes:
+      value: Please leave credentials and private account data out of this report. See SECURITY.md for security vulnerabilities.
+  - type: input
+    id: page
+    attributes:
+      label: Affected page
+      placeholder: https://wooflab.eu/guestbook/
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include what you clicked and whether you were signed in.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include the error text or a screenshot with private information removed.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device
+      placeholder: Firefox on Windows, Safari on iPhone, etc.
+    validations:
+      required: true

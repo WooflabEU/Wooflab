@@ -1,0 +1,234 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index b69b93a729eadee0de870f0fc73fa5593a94e633..d505323fa20f1ffb720efd1366bc67d747eb2c19 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -6,6 +6,8 @@
+   overview linking to the live website and the existing Byte illustrations.
+ - Added English and Finnish setup guides for GitHub, Cloudflare Pages,
+   Supabase, X OAuth 2.0, and guestbook administration.
++- Added a root-level English deployment guide and made it the default
++  deployment documentation linked from the README and both setup guides.
+ - Added GitHub Actions validation, issue forms, contribution guidance,
+   vulnerability reporting guidance, and a pull request template.
+ - Added repository, homepage, and issue tracker metadata to the package.
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 96a4093dbb69631fdd876180f2152e56541a4b08..4f8147d5a4b015eeb4ef1d7c70bb64bcfaf9532a 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -19,8 +19,9 @@ describe the problem it would solve before proposing an implementation.
+    npm run check
+    ```
+ 
+-Keep the website copy in English and the setup instructions consistent in both
+-languages. Prefer small changes that fit the existing HTML, CSS, and vanilla
++Keep `README.md` and the default `DEPLOYMENT.md` guide in English. Keep the
++Finnish setup guide consistent with the English documentation. Prefer small
++changes that fit the existing HTML, CSS, and vanilla
+ JavaScript structure. Include screenshots for visible layout changes.
+ 
+ ## Guestbook and configuration
+diff --git a/DEPLOYMENT.md b/DEPLOYMENT.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..b1121570fb684204d7c5218f4cb7c125fb2cf158
+--- /dev/null
++++ b/DEPLOYMENT.md
+@@ -0,0 +1,132 @@
++# Deploy WoofLab to Cloudflare Pages
++
++This is the default deployment guide for the repository. Documentation is in
++English; a [Finnish setup guide](docs/SETUP.fi.md) is also available.
++
++[Project overview](README.md) · [Full Supabase and X setup](docs/SETUP.md)
++
++## Before you start
++
++You need a GitHub repository containing the project, a Cloudflare account,
++and a Supabase project with an X OAuth 2.0 application for the guestbook.
++Use your own services and domain for a separate deployment. Keep the existing
++public configuration when updating the working WoofLab deployment.
++
++## 1. Prepare the guestbook
++
++Run [001_guestbook.sql](supabase/migrations/001_guestbook.sql) in your
++Supabase project's SQL Editor. Enable the **X / Twitter (OAuth 2.0)** provider
++and configure the X application as described in the
++[English setup guide](docs/SETUP.md).
++
++The homepage and small tools work without a configured guestbook. Add the
++database and authentication settings before testing sign-in and comments.
++
++## 2. Set the public website configuration
++
++Edit [public/site-config.json](public/site-config.json):
++
++```json
++{
++  "supabaseUrl": "https://YOUR-PROJECT.supabase.co",
++  "supabasePublishableKey": "sb_publishable_YOUR_PUBLIC_KEY",
++  "contactEmail": "",
++  "operatorName": "WoofLab"
++}
++```
++
++Replace the project URL and publishable key with your own values. Set your
++real contact email and operator name as appropriate. The build copies these
++settings to the published website.
++
++The Supabase URL and publishable key are public browser settings. Keep the
++X Client Secret in Supabase's provider settings. Supabase secret/service-role
++keys do not belong in this file or in `VITE_` variables.
++
++## 3. Check the source
++
++With Node.js 22.18.0 or a supported newer version installed, run from the
++directory containing `package.json`:
++
++```sh
++npm ci
++npm test
++npm run build
++npm run check
++```
++
++Commit and push the source to your GitHub repository's `main` branch.
++Cloudflare will build `dist/` from the source files.
++
++## 4. Connect GitHub to Cloudflare Pages
++
++1. Open **Workers & Pages → Create application → Pages → Connect to Git**
++   in the [Cloudflare dashboard](https://dash.cloudflare.com/).
++2. Choose GitHub, authorize your repository, and begin setup.
++3. Use the `name` from [wrangler.jsonc](wrangler.jsonc) as the Pages project name.
++4. Enter these settings:
++
++   | Setting | Value |
++   | --- | --- |
++   | Production branch | `main` |
++   | Framework preset | `None` |
++   | Build command | `npm run build` |
++   | Build output directory | `dist` |
++   | Root directory | Repository root, where `package.json` is located |
++
++5. Select **Save and Deploy** and open the resulting `pages.dev` URL.
++
++This repository uses **Pages**. The setup asks for a build output directory;
++it does not need a separate Workers deploy command.
++
++## 5. Connect the domain and finish authentication
++
++Open the Pages project's **Custom domains** section and add your domain.
++An apex domain must use a DNS zone on the same Cloudflare account with the
++assigned Cloudflare nameservers. Wait for the domain and HTTPS to become active.
++
++For the WoofLab production domain, configure these authentication addresses:
++
++| Location | Value |
++| --- | --- |
++| Supabase Site URL | `https://wooflab.eu` |
++| Supabase allowed redirect | `https://wooflab.eu/auth/callback/` |
++| X application callback | The callback copied from Supabase, ending in `/auth/v1/callback` |
++
++Replace `wooflab.eu` with your own domain for a separate deployment. Update
++canonical/social URLs in the HTML pages and the domain references in
++`public/sitemap.xml` and `public/robots.txt` as well.
++
++Test X sign-in on the final domain, post a comment, then sign out and confirm
++that the comment remains public. A Pages preview used for authentication needs
++its own exact callback URL in Supabase's allowed redirect list.
++
++## 6. Publish future updates
++
++```sh
++git add .
++git commit -m "Update WoofLab"
++git push
++```
++
++Cloudflare automatically builds and deploys pushes to `main`. GitHub Actions
++runs validation separately; it does not gate Cloudflare deployments.
++
++## Troubleshooting
++
++| Symptom | What to check |
++| --- | --- |
++| Build succeeds, then `npx wrangler deploy` fails with a missing entry-point | The repository was connected to Workers Builds. Create a Pages project using the settings above. |
++| Guestbook shows its opening-soon state | Set the Supabase URL and publishable key in `public/site-config.json`, then rebuild. |
++| X sign-in fails or redirects to another host | Check both callback addresses and the exact allowed redirect for the domain you are using. |
++| A Git deployment replaces a configuration change made in `dist/` | Change `public/site-config.json` or the corresponding public build variables; `dist/` is generated. |
++
++A Direct Upload Pages project cannot be converted to Git integration. Create a
++new Git-integrated Pages project, verify its build, then move the custom domain
++association if necessary.
++
++## Official references
++
++- [Cloudflare Pages Git integration](https://developers.cloudflare.com/pages/get-started/git-integration/)
++- [Cloudflare Pages custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
++- [Supabase X OAuth 2.0](https://supabase.com/docs/guides/auth/social-login/auth-twitter)
+diff --git a/README.md b/README.md
+index 71010253588b4327efd585f3bbadf2fee0d97ae9..d53cb3f7e299c6d307014c04fa164308a34db2c4 100644
+--- a/README.md
++++ b/README.md
+@@ -7,7 +7,8 @@ dog with a weakness for snacks and a habit of sitting on the keyboard.
+ 
+ [Visit wooflab.eu](https://wooflab.eu) ·
+ [Sign the guestbook](https://wooflab.eu/guestbook/) ·
+-[Setup guide](docs/SETUP.md) ·
++[Deploy (English)](DEPLOYMENT.md) ·
++[Setup (English)](docs/SETUP.md) ·
+ [Ohjeet suomeksi](docs/SETUP.fi.md)
+ 
+ [![CI](https://github.com/BOT-TI/wooflab/actions/workflows/ci.yml/badge.svg)](https://github.com/BOT-TI/wooflab/actions/workflows/ci.yml)
+@@ -70,6 +71,10 @@ GitHub Actions runs these checks for pushes to `main` and pull requests.
+ 
+ ## Deploy
+ 
++Start with [DEPLOYMENT.md](DEPLOYMENT.md), the repository's default deployment
++guide in English. It covers the GitHub → Cloudflare Pages workflow, public
++configuration, custom domains, X callback URLs, and deployment troubleshooting.
++
+ Connect this repository to **Cloudflare Pages** with these settings:
+ 
+ | Setting | Value |
+@@ -82,8 +87,9 @@ Connect this repository to **Cloudflare Pages** with these settings:
+ 
+ The Pages project name must match `name` in `wrangler.jsonc`.
+ Cloudflare builds and deploys new commits pushed to `main`.
+-Full configuration, domain, Supabase, and X instructions are in
+-[docs/SETUP.md](docs/SETUP.md) and [docs/SETUP.fi.md](docs/SETUP.fi.md).
++For detailed database and authentication configuration, see the
++[English setup guide](docs/SETUP.md). A [Finnish version](docs/SETUP.fi.md)
++is available as an alternative.
+ 
+ ## Public configuration
+ 
+@@ -107,6 +113,7 @@ public/                    Images, icons, fonts, headers, and public settings
+ supabase/migrations/       Database tables, permissions, and functions
+ test/                      Tool, validation, and database tests
+ scripts/                   Production-build checks
++DEPLOYMENT.md              Default deployment guide in English
+ docs/                      English and Finnish setup guides
+ ```
+ 
+diff --git a/docs/SETUP.fi.md b/docs/SETUP.fi.md
+index 8b4eef58ef5fbae4368d25c19820474e6247b766..5b46a4e8de7b4d2b3b2f3ab5a9b741ad203839cf 100644
+--- a/docs/SETUP.fi.md
++++ b/docs/SETUP.fi.md
+@@ -1,5 +1,6 @@
+ # WoofLabin käyttöönotto
+ 
++[Deploy-ohje (English, oletus)](../DEPLOYMENT.md) ·
+ [Takaisin projektiin](../README.md) · [English setup guide](SETUP.md)
+ 
+ Sivusto: [wooflab.eu](https://wooflab.eu).
+diff --git a/docs/SETUP.md b/docs/SETUP.md
+index 7dc5730d1e76638455d0470e8d2b068bbd8566e9..f8060e0b8be0f09628df0dab5f7a13fbd64428bd 100644
+--- a/docs/SETUP.md
++++ b/docs/SETUP.md
+@@ -1,5 +1,6 @@
+ # Setup and deployment
+ 
++[Deployment guide (English, default)](../DEPLOYMENT.md) ·
+ [Back to the project](../README.md) · [Ohjeet suomeksi](SETUP.fi.md)
+ 
+ Production website: [wooflab.eu](https://wooflab.eu).

@@ -1,0 +1,44 @@
+{
+  "name": "wooflab",
+  "version": "1.0.3",
+  "private": true,
+  "type": "module",
+  "description": "Small paws. Big ideas. A lightweight creative playground for wooflab.eu.",
+  "homepage": "https://wooflab.eu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wooflabEU/wooflab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wooflabEU/wooflab/issues"
+  },
+  "keywords": [
+    "wooflab",
+    "vite",
+    "cloudflare-pages",
+    "supabase",
+    "guestbook"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test",
+    "check": "node scripts/check-project.mjs",
+    "pages:login": "npx --yes wrangler@4.151.1 login",
+    "pages:create": "npx --yes wrangler@4.151.1 pages project create wooflab --production-branch main",
+    "pages:dev": "npx --yes wrangler@4.151.1 pages dev dist",
+    "deploy": "npm run build && npx --yes wrangler@4.151.1 pages deploy dist --project-name wooflab --branch main"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.4",
+    "@fontsource-variable/space-grotesk": "5.3.0",
+    "@electric-sql/pglite": "0.5.10"
+  }
+}

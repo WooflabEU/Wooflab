@@ -1,0 +1,1199 @@
+diff --git a/.github/ISSUE_TEMPLATE/bug_report.yml b/.github/ISSUE_TEMPLATE/bug_report.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..a14531b5d7acd8424e3437849d7400a80c04e66b
+--- /dev/null
++++ b/.github/ISSUE_TEMPLATE/bug_report.yml
+@@ -0,0 +1,40 @@
++name: Bug report
++description: Report a reproducible problem with WoofLab.
++body:
++  - type: markdown
++    attributes:
++      value: Please leave credentials and private account data out of this report. See SECURITY.md for security vulnerabilities.
++  - type: input
++    id: page
++    attributes:
++      label: Affected page
++      placeholder: https://wooflab.eu/guestbook/
++    validations:
++      required: true
++  - type: textarea
++    id: steps
++    attributes:
++      label: Steps to reproduce
++      description: Include what you clicked and whether you were signed in.
++    validations:
++      required: true
++  - type: textarea
++    id: expected
++    attributes:
++      label: Expected result
++    validations:
++      required: true
++  - type: textarea
++    id: actual
++    attributes:
++      label: Actual result
++      description: Include the error text or a screenshot with private information removed.
++    validations:
++      required: true
++  - type: input
++    id: environment
++    attributes:
++      label: Browser and device
++      placeholder: Firefox on Windows, Safari on iPhone, etc.
++    validations:
++      required: true
+diff --git a/.github/ISSUE_TEMPLATE/feature_request.yml b/.github/ISSUE_TEMPLATE/feature_request.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..b44e6969ccea8e3c8bc49c7f31eac194159c81a6
+--- /dev/null
++++ b/.github/ISSUE_TEMPLATE/feature_request.yml
+@@ -0,0 +1,20 @@
++name: Feature request
++description: Suggest a useful improvement to WoofLab.
++body:
++  - type: textarea
++    id: problem
++    attributes:
++      label: What problem would this solve?
++      description: Describe who would benefit and what they are trying to do.
++    validations:
++      required: true
++  - type: textarea
++    id: proposal
++    attributes:
++      label: Suggested improvement
++    validations:
++      required: true
++  - type: textarea
++    id: alternatives
++    attributes:
++      label: Other approaches you considered
+diff --git a/.github/PULL_REQUEST_TEMPLATE.md b/.github/PULL_REQUEST_TEMPLATE.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3b7f3f6da78faf0d30e5ad3f868b299dae0ac4ec
+--- /dev/null
++++ b/.github/PULL_REQUEST_TEMPLATE.md
+@@ -0,0 +1,15 @@
++## Change
++
++Describe the problem and resulting behavior.
++
++## Validation
++
++- [ ] `npm test`
++- [ ] `npm run build`
++- [ ] `npm run check`
++- [ ] Screenshots included for visible changes, if applicable.
++
++## Deployment notes
++
++List any required database migration or operator configuration change.
++Leave credentials and private user data out of this pull request.
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..10e3cb4e1f6cc12894e1d0097b61c1c8638818ca
+--- /dev/null
++++ b/.github/workflows/ci.yml
+@@ -0,0 +1,38 @@
++name: CI
++
++on:
++  push:
++    branches: [main]
++  pull_request:
++  workflow_dispatch:
++
++permissions:
++  contents: read
++
++concurrency:
++  group: ${{ github.workflow }}-${{ github.ref }}
++  cancel-in-progress: true
++
++jobs:
++  validate:
++    name: Test and build
++    runs-on: ubuntu-latest
++    timeout-minutes: 10
++    steps:
++      - name: Check out source
++        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
++        with:
++          persist-credentials: false
++      - name: Set up Node.js
++        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
++        with:
++          node-version-file: .node-version
++          cache: npm
++      - name: Install locked dependencies
++        run: npm ci
++      - name: Test tools and isolated guestbook database
++        run: npm test
++      - name: Build production site
++        run: npm run build
++      - name: Check generated pages and assets
++        run: npm run check
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index fe2fcfa0fd177f11e05437f7300410d34aaea2a9..d505323fa20f1ffb720efd1366bc67d747eb2c19 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,19 @@
+ # Changes
+ 
++## 1.0.2
++
++- Replaced the delivery-package README with an English public-repository
++  overview linking to the live website and the existing Byte illustrations.
++- Added English and Finnish setup guides for GitHub, Cloudflare Pages,
++  Supabase, X OAuth 2.0, and guestbook administration.
++- Added a root-level English deployment guide and made it the default
++  deployment documentation linked from the README and both setup guides.
++- Added GitHub Actions validation, issue forms, contribution guidance,
++  vulnerability reporting guidance, and a pull request template.
++- Added repository, homepage, and issue tracker metadata to the package.
++- Preserved the deployed website configuration, application behavior, and
++  database migration.
++
+ ## 1.0.1
+ 
+ - Fixed vertically stretched images by preserving intrinsic image proportions
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..4f8147d5a4b015eeb4ef1d7c70bb64bcfaf9532a
+--- /dev/null
++++ b/CONTRIBUTING.md
+@@ -0,0 +1,43 @@
++# Contributing to WoofLab
++
++Thanks for taking an interest in the project. For a bug, include the page URL,
++reproduction steps, expected result, and browser/device details. For a feature,
++describe the problem it would solve before proposing an implementation.
++
++## Develop a change
++
++1. Fork the repository and create a branch for your change.
++2. Install Node.js 22.18.0 or a supported newer version.
++3. Run `npm ci`, then `npm run dev`.
++4. For authenticated flows in a fork, configure your own Supabase and X apps
++   using the [setup guide](docs/SETUP.md).
++5. Before submitting, run:
++
++   ```sh
++   npm test
++   npm run build
++   npm run check
++   ```
++
++Keep `README.md` and the default `DEPLOYMENT.md` guide in English. Keep the
++Finnish setup guide consistent with the English documentation. Prefer small
++changes that fit the existing HTML, CSS, and vanilla
++JavaScript structure. Include screenshots for visible layout changes.
++
++## Guestbook and configuration
++
++- Preserve database authorization and rate-limit checks when changing comments.
++- Render user comments as text rather than HTML.
++- Keep X profile data sourced from trusted authentication identities.
++- Use publishable keys for browser configuration. Keep privileged credentials
++  out of commits, screenshots, issues, and pull requests.
++- Explain any required database migration or operator configuration in the PR.
++
++Report security vulnerabilities using [SECURITY.md](SECURITY.md), rather than
++including private user data or exploit details in a public issue.
++
++## Scope and licensing
++
++This repository currently has no open-source license for the project-specific
++code or brand assets. Read the [third-party notices](THIRD_PARTY_NOTICES.md)
++before reusing dependency code, fonts, or other licensed components.
+diff --git a/DEPLOYMENT.md b/DEPLOYMENT.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..b1121570fb684204d7c5218f4cb7c125fb2cf158
+--- /dev/null
++++ b/DEPLOYMENT.md
+@@ -0,0 +1,132 @@
++# Deploy WoofLab to Cloudflare Pages
++
++This is the default deployment guide for the repository. Documentation is in
++English; a [Finnish setup guide](docs/SETUP.fi.md) is also available.
++
++[Project overview](README.md) · [Full Supabase and X setup](docs/SETUP.md)
++
++## Before you start
++
++You need a GitHub repository containing the project, a Cloudflare account,
++and a Supabase project with an X OAuth 2.0 application for the guestbook.
++Use your own services and domain for a separate deployment. Keep the existing
++public configuration when updating the working WoofLab deployment.
++
++## 1. Prepare the guestbook
++
++Run [001_guestbook.sql](supabase/migrations/001_guestbook.sql) in your
++Supabase project's SQL Editor. Enable the **X / Twitter (OAuth 2.0)** provider
++and configure the X application as described in the
++[English setup guide](docs/SETUP.md).
++
++The homepage and small tools work without a configured guestbook. Add the
++database and authentication settings before testing sign-in and comments.
++
++## 2. Set the public website configuration
++
++Edit [public/site-config.json](public/site-config.json):
++
++```json
++{
++  "supabaseUrl": "https://YOUR-PROJECT.supabase.co",
++  "supabasePublishableKey": "sb_publishable_YOUR_PUBLIC_KEY",
++  "contactEmail": "",
++  "operatorName": "WoofLab"
++}
++```
++
++Replace the project URL and publishable key with your own values. Set your
++real contact email and operator name as appropriate. The build copies these
++settings to the published website.
++
++The Supabase URL and publishable key are public browser settings. Keep the
++X Client Secret in Supabase's provider settings. Supabase secret/service-role
++keys do not belong in this file or in `VITE_` variables.
++
++## 3. Check the source
++
++With Node.js 22.18.0 or a supported newer version installed, run from the
++directory containing `package.json`:
++
++```sh
++npm ci
++npm test
++npm run build
++npm run check
++```
++
++Commit and push the source to your GitHub repository's `main` branch.
++Cloudflare will build `dist/` from the source files.
++
++## 4. Connect GitHub to Cloudflare Pages
++
++1. Open **Workers & Pages → Create application → Pages → Connect to Git**
++   in the [Cloudflare dashboard](https://dash.cloudflare.com/).
++2. Choose GitHub, authorize your repository, and begin setup.
++3. Use the `name` from [wrangler.jsonc](wrangler.jsonc) as the Pages project name.
++4. Enter these settings:
++
++   | Setting | Value |
++   | --- | --- |
++   | Production branch | `main` |
++   | Framework preset | `None` |
++   | Build command | `npm run build` |
++   | Build output directory | `dist` |
++   | Root directory | Repository root, where `package.json` is located |
++
++5. Select **Save and Deploy** and open the resulting `pages.dev` URL.
++
++This repository uses **Pages**. The setup asks for a build output directory;
++it does not need a separate Workers deploy command.
++
++## 5. Connect the domain and finish authentication
++
++Open the Pages project's **Custom domains** section and add your domain.
++An apex domain must use a DNS zone on the same Cloudflare account with the
++assigned Cloudflare nameservers. Wait for the domain and HTTPS to become active.
++
++For the WoofLab production domain, configure these authentication addresses:
++
++| Location | Value |
++| --- | --- |
++| Supabase Site URL | `https://wooflab.eu` |
++| Supabase allowed redirect | `https://wooflab.eu/auth/callback/` |
++| X application callback | The callback copied from Supabase, ending in `/auth/v1/callback` |
++
++Replace `wooflab.eu` with your own domain for a separate deployment. Update
++canonical/social URLs in the HTML pages and the domain references in
++`public/sitemap.xml` and `public/robots.txt` as well.
++
++Test X sign-in on the final domain, post a comment, then sign out and confirm
++that the comment remains public. A Pages preview used for authentication needs
++its own exact callback URL in Supabase's allowed redirect list.
++
++## 6. Publish future updates
++
++```sh
++git add .
++git commit -m "Update WoofLab"
++git push
++```
++
++Cloudflare automatically builds and deploys pushes to `main`. GitHub Actions
++runs validation separately; it does not gate Cloudflare deployments.
++
++## Troubleshooting
++
++| Symptom | What to check |
++| --- | --- |
++| Build succeeds, then `npx wrangler deploy` fails with a missing entry-point | The repository was connected to Workers Builds. Create a Pages project using the settings above. |
++| Guestbook shows its opening-soon state | Set the Supabase URL and publishable key in `public/site-config.json`, then rebuild. |
++| X sign-in fails or redirects to another host | Check both callback addresses and the exact allowed redirect for the domain you are using. |
++| A Git deployment replaces a configuration change made in `dist/` | Change `public/site-config.json` or the corresponding public build variables; `dist/` is generated. |
++
++A Direct Upload Pages project cannot be converted to Git integration. Create a
++new Git-integrated Pages project, verify its build, then move the custom domain
++association if necessary.
++
++## Official references
++
++- [Cloudflare Pages Git integration](https://developers.cloudflare.com/pages/get-started/git-integration/)
++- [Cloudflare Pages custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
++- [Supabase X OAuth 2.0](https://supabase.com/docs/guides/auth/social-login/auth-twitter)
+diff --git a/README.md b/README.md
+index b86331e61b0556d5525f531519a7b6f6b90ebee1..d53cb3f7e299c6d307014c04fa164308a34db2c4 100644
+--- a/README.md
++++ b/README.md
+@@ -1,289 +1,128 @@
+-# WoofLab.eu
++# WoofLab
+ 
+-Versio 1.0.1 korjaa kuvien pystysuuntaisen venymisen ja sisältää myös
+-alkuperäiskokoiset 1254 × 1254 -versiot kolmesta Byte-kuvasta.
+-**Päivityksessä säilytä nykyiset `site-config.json`-asetuksesi**: kopioi ne uuden
+-paketin `public/`- ja `dist/`-versioihin ennen julkaisua tai seuraavaa buildia.
++**Small paws. Big ideas.**
+ 
+-Valmis Vite-sivusto WoofLabille. Sähkönvihreä ilme, kolme uutta Byte-kuvaa,
+-hyväksytty koiran tarina, kaksi pientä toimivaa selainkokeilua sekä julkinen
+-X-kirjautumisella toimiva vieraskirja.
++A little workshop for useful tools, curious experiments, and Byte: a fictional
++dog with a weakness for snacks and a habit of sitting on the keyboard.
+ 
+-**Tämä paketti ei ole vielä julkaisu verkkotunnuksellesi.** Lähdekoodi ja
+-valmiiksi buildattu `dist/` ovat mukana. Etusivu toimii heti. Vieraskirjan
+-aktivointi tarvitsee oman Supabase-projektin ja X Developer -sovelluksen.
+-Paketissa ei ole salaisia avaimia tai keksittyjä vieraskirjaviestejä.
++[Visit wooflab.eu](https://wooflab.eu) ·
++[Sign the guestbook](https://wooflab.eu/guestbook/) ·
++[Deploy (English)](DEPLOYMENT.md) ·
++[Setup (English)](docs/SETUP.md) ·
++[Ohjeet suomeksi](docs/SETUP.fi.md)
+ 
+-## 1. Nopein tapa: valmis sivu ilman paikallista asennusta
++[![CI](https://github.com/BOT-TI/wooflab/actions/workflows/ci.yml/badge.svg)](https://github.com/BOT-TI/wooflab/actions/workflows/ci.yml)
+ 
+-1. Pura projektin zip.
+-2. Tee Supabase-asennus ja X-asetukset alla olevien kohtien 3–5 mukaan.
+-3. Avaa `dist/site-config.json` tekstieditorissa ja täytä julkiset asetukset.
+-4. Cloudflaressa valitse **Workers & Pages → Create application → Pages →
+-   Direct Upload / Drag and drop**. Hallintapaneelin nimitykset voivat muuttua.
+-5. Lataa **`dist`-kansio**, jonka juuressa on `index.html`.
+-   Koko lähdekoodipakettia tai `node_modules`-kansiota ei ladata julkaisuun.
+-6. Lisää verkkotunnus kohdan 7 mukaan.
++![Byte working at a laptop with a WoofLab sticker](public/images/byte-coding-560.webp)
+ 
+-Voit julkaista etusivun jo ennen Supabase-asennusta. Tällöin vieraskirjassa
+-näkyy tarkoituksellinen “opening soon” -tila, eikä kirjautumista teeskennellä.
++## What's here
+ 
+-**Valitse julkaisumalli alussa:** Cloudflaren Direct Upload -projektia ei voi
+-myöhemmin vaihtaa Git-integraatioksi saman projektin sisällä. Jos haluat heti
+-automaattiset julkaisut GitHubista, käytä kohtaa 6.
++- A responsive website and the story of WoofLab's fictional founder, Byte.
++- **Focus Fetch:** a small focus timer with start, pause, and reset controls.
++- **Idea Fetch:** a generator for the next small thing to make.
++- A public guestbook with X OAuth 2.0 sign-in through Supabase.
++- Responsive WebP illustrations, self-hosted fonts, and static HTML pages.
+ 
+-## 2. Paikallinen kehitys
++Everyone can read guestbook comments. Signed-in X users can post and remove
++their own comments; an administrator can moderate all comments. Posting is
++limited to one comment every 30 seconds per account in the database.
+ 
+-Suositus: Node.js 22.18 tai uudempi tuettu versio (vähintään 22.12).
+-Paketin `.node-version` ja `.nvmrc` määrittävät version 22.18.0.
++## Stack
++
++| Part | Technology |
++| --- | --- |
++| Website | Vite, HTML, CSS, and vanilla JavaScript |
++| Hosting | Cloudflare Pages, deployed from GitHub |
++| Authentication | Supabase Auth with the X OAuth 2.0 provider |
++| Guestbook | Supabase Postgres, RLS policies, and database functions |
++| Tests | Node.js test runner and PGlite |
++
++The site builds into static files. Database access and authentication are
++handled by Supabase; no Pages Functions or Cloudflare D1 database is required.
++
++## Run locally
++
++Use Node.js 22.18.0 or a supported newer version, with npm.
+ 
+ ```sh
+-cd wooflab
+ npm ci
+ npm run dev
+ ```
+ 
+-Avaa Viten tulostama paikallinen osoite, tavallisesti `http://localhost:5173`.
++Open the local URL printed by Vite, normally `http://localhost:5173`.
++For a fork or a separate deployment, configure your own Supabase project before
++testing authenticated guestbook flows. See the [setup guide](docs/SETUP.md).
++
++## Validate and build
+ 
+ ```sh
+-npm run build
+-npm run preview
+ npm test
++npm run build
+ npm run check
+ ```
+ 
+-- `build` tekee staattisen julkaisun kansioon `dist/`.
+-- `preview` avaa buildatun version paikallisesti.
+-- `test` ajaa ajastimen, syötteiden ja oikean PostgreSQL-moottorin
+-  tietokantaoikeustestit (PGlite). Ulkoisia testitilejä ei tarvita.
+-- `check` tarkistaa buildin sivut, linkit, kuvat ja julkiset asetukset.
+-
+-Käyttöliittymä on tavallista HTML:ää, CSS:ää ja JavaScriptiä. Etusivu ei lataa
+-Supabasen JavaScript-kirjastoa; se ladataan vieraskirjassa ja kirjautumisen
+-paluuosoitteessa. Fontti on omassa julkaisussa, ei Google Fonts -pyyntönä.
+-
+-## 3. Ilmainen Supabase-projekti
+-
+-1. Luo [Supabasessa](https://supabase.com/dashboard) **Free**-projekti ja
+-   valitse sinulle sopiva alue, esimerkiksi EU-alue.
+-2. Avaa **SQL Editor** ja suorita kokonaisuudessaan
+-   `supabase/migrations/001_guestbook.sql`.
+-3. SQL luo julkiset profiili- ja kommenttitaulut, tietokannan käyttöoikeudet,
+-   kommentointifunktiot ja suojatun ylläpitäjätaulun.
+-4. Kopioi projektin URL ja **publishable key** kohdasta **Project Settings →
+-   API / API Keys**. Myös vanha julkinen `anon`-avain on tuettu.
+-
+-Supabase Free sisältää tällä hetkellä 500 MB tietokannan ja sosiaalisen
+-kirjautumisen käyttökiintiöineen. Ilmaista projektia voidaan tauottaa noin
+-viikon vähäisen käytön jälkeen. Sen voi palauttaa Supabasen hallinnasta.
+-Sivusto ei tee keinotekoisia ylläpitopyyntöjä.
+-
+-WoofLabin oma `wooflab.eu`-verkkotunnus kuuluu Cloudflare Pagesille.
+-Supabasen maksullista custom domain -lisäosaa ei tarvita: taustapalvelu käyttää
+-tavallista `https://PROJEKTISI.supabase.co`-osoitetta.
+-
+-## 4. X-kirjautuminen
+-
+-Supabasen nykyinen **X / Twitter (OAuth 2.0)** -palveluntarjoaja on käytössä.
+-Legacy Twitter / OAuth 1.0a ei ole tämän projektin kirjautumistapa.
+-
+-1. Luo [X Developer -hallinnassa](https://developer.x.com/) projekti ja sovellus.
+-2. Avaa sovelluksen **User authentication settings** ja ota OAuth 2.0 käyttöön.
+-3. Valitse sovellustyypiksi **Web App**. Supabasen ohjeen mukaisesti ota käyttöön
+-   myös **Request email from users**. Sähköpostia ei julkaista vieraskirjassa.
+-4. Ota Supabasessa käyttöön **Authentication → Sign In / Providers →
+-   X / Twitter (OAuth 2.0)** ja kopioi siellä näkyvä callback-osoite.
+-5. Aseta **X-sovelluksen Callback URL** tähän täsmälliseen osoitteeseen:
+-
+-   ```text
+-   https://PROJEKTISI.supabase.co/auth/v1/callback
+-   ```
+-
+-6. X-sovelluksen muut osoitteet:
+-   - Website URL: `https://wooflab.eu`
+-   - Privacy policy: `https://wooflab.eu/privacy/`
+-   - Terms of service: `https://wooflab.eu/terms/`
+-7. Kopioi X:n **Client ID** ja **Client Secret** Supabasen X-providerin asetuksiin.
+-8. Supabasen **Authentication → URL Configuration**:
+-   - Site URL: `https://wooflab.eu`
+-   - Redirect URL: `https://wooflab.eu/auth/callback/`
+-   - Paikallista kehitystä varten myös `http://localhost:5173/auth/callback/`
+-   - Lisää tarvittaessa käyttämäsi Cloudflare-preview-osoitteen täsmällinen
+-     `/auth/callback/`-osoite.
+-9. Pidä muut kirjautumispalveluntarjoajat ja anonyymi kirjautuminen pois käytöstä,
+-   jos käytät projektia vain WoofLabille. Vieraskirjan tietokantafunktio vaatii
+-   joka tapauksessa oikean `x`-identiteetin.
+-
+-**Kaksi eri callback-osoitetta:** X palauttaa käyttäjän Supabasen
+-`/auth/v1/callback`-osoitteeseen. Supabase palauttaa käyttäjän WoofLabin
+-`/auth/callback/`-sivulle. Niitä ei vaihdeta keskenään.
+-
+-X:n sovellusavaimia ei laiteta sivuston tiedostoihin tai `VITE_`-muuttujiin.
+-X:n API-käyttöoikeus ja mahdollinen hinnoittelu määräytyvät erikseen oman
+-X Developer -tilisi mukaan; Supabasen ilmaistaso ei takaa X:n palvelun maksuttomuutta.
+-
+-## 5. Sivuston julkiset asetukset
+-
+-Lähdekoodista kehitettäessä muokkaa `public/site-config.json`:
+-
+-```json
+-{
+-  "supabaseUrl": "https://PROJEKTISI.supabase.co",
+-  "supabasePublishableKey": "sb_publishable_OMA_JULKINEN_AVAIMESI",
+-  "contactEmail": "",
+-  "operatorName": "WoofLab"
+-}
+-```
++- Tests cover the small tools, public configuration, and guestbook permissions
++  against an isolated PGlite database.
++- The build writes the production site to `dist/`.
++- The project check verifies the generated pages, local links, image files,
++  public configuration, and guestbook text rendering.
+ 
+-Lisää `contactEmail`-kenttään oikea toimiva yhteysosoitteesi ja määritä
+-`operatorName` sopivaksi ennen julkista käyttöönottoa. Yhteystieto tulee silloin
+-automaattisesti alatunnisteeseen ja tietosuojasivulle. Tyhjään kenttään ei
+-keksitä sähköpostiosoitetta. Tarkista tietosuojatekstin vastaavuus omiin tietoihisi.
+-
+-- `supabaseUrl` ja publishable/anon-avain ovat julkisia selainasetuksia.
+-- **Supabasen secret / service_role -avainta ei saa käyttää selaimessa.**
+-  Build ja asetustarkistus hylkäävät tunnistettavat salaiset avaimet.
+-- `public/site-config.json` kopioituu buildissa `dist/site-config.json`-tiedostoksi.
+-- Valmista `dist/`-kansiota voi käyttää muokkaamalla sen `site-config.json`-tiedostoa
+-  suoraan. Tällöin uutta buildia ei tarvita. Pidä sama asetus myös `public/`-versiossa,
+-  jos myöhemmin buildaat projektin uudelleen.
+-- Vaihtoehtoisesti `.env.example`-tiedostossa kuvatut julkiset `VITE_`-muuttujat
+-  ohittavat JSON-asetukset buildin yhteydessä. Mukana oleva valmis build käyttää
+-  oletuksena JSON-asetuksia.
+-
+-## 6. Cloudflare Pages GitHubista
+-
+-1. Vie lähdekoodi omaan GitHub-repositoryysi. `node_modules/`, `.env` ja `dist/`
+-   on suljettu pois Gitistä.
+-2. Luo Cloudflaressa Pages-projekti Git-integraatiolla ja valitse repository.
+-3. Build-asetukset:
+-
+-   | Asetus | Arvo |
+-   |---|---|
+-   | Framework preset | None / Vite |
+-   | Build command | `npm run build` |
+-   | Output directory | `dist` |
+-   | Production branch | `main` |
+-   | Root directory | Repositoryn juuri, jos `package.json` on juuressa |
+-   | Node | `.node-version` määrittää 22.18.0 |
+-
+-4. Lisää tarvittaessa julkiset `VITE_SUPABASE_URL`,
+-   `VITE_SUPABASE_PUBLISHABLE_KEY` ja `VITE_CONTACT_EMAIL` buildin muuttujiin.
+-   Vaihtoehtona voit käyttää `public/site-config.json`-tiedostoa.
+-5. Julkaise ja testaa myös vieraskirjan osoite suoraan avattuna.
+-
+-Cloudflaren wrangler-asetus on `wrangler.jsonc`. Siinä ei ole D1-tietokantaa,
+-Pages Functions -palvelinta tai maksullista tietokantavaatimusta.
+-
+-Jos haluat julkaista terminaalista Direct Upload -projektina:
++GitHub Actions runs these checks for pushes to `main` and pull requests.
+ 
+-```sh
+-npm run pages:login
+-npm run pages:create
+-npm run deploy
+-```
++## Deploy
+ 
+-Ensimmäinen komento avaa Cloudflare-kirjautumisen omassa ympäristössäsi.
+-Wrangler haetaan tarvittaessa `npx`:llä; se ei ole sivuston ajonaikainen riippuvuus.
+-Jos tililläsi on jo `wooflab`-projekti, ohita `pages:create`. Jos valitset muun
+-nimen, muuta se `package.json`-skripteihin ja `wrangler.jsonc`-tiedostoon.
++Start with [DEPLOYMENT.md](DEPLOYMENT.md), the repository's default deployment
++guide in English. It covers the GitHub → Cloudflare Pages workflow, public
++configuration, custom domains, X callback URLs, and deployment troubleshooting.
+ 
+-## 7. Verkkotunnus wooflab.eu
++Connect this repository to **Cloudflare Pages** with these settings:
+ 
+-1. Avaa Pages-projektin **Custom domains → Set up a custom domain**.
+-2. Lisää `wooflab.eu` ja seuraa Cloudflaren DNS-ohjeita.
+-3. Apex-domainin käyttö Pagesissa edellyttää domainin vyöhykkeen määrittämistä
+-   Cloudflaren tilille. Jos domain on ostettu muualta, tämä tarkoittaa yleensä
+-   Cloudflaren antamien nimipalvelinten asettamista rekisteröijän hallinnassa.
+-4. Odota, että domain ja HTTPS näkyvät aktiivisina.
+-5. Varmista, että Supabasen Site URL ja sallittu paluuosoite ovat lopullisen
+-   domainin HTTPS-osoitteita.
++| Setting | Value |
++| --- | --- |
++| Production branch | `main` |
++| Framework preset | `None` |
++| Build command | `npm run build` |
++| Build output directory | `dist` |
++| Root directory | Repository root |
+ 
+-## 8. Ylläpitäjän oikeus
++The Pages project name must match `name` in `wrangler.jsonc`.
++Cloudflare builds and deploys new commits pushed to `main`.
++For detailed database and authentication configuration, see the
++[English setup guide](docs/SETUP.md). A [Finnish version](docs/SETUP.fi.md)
++is available as an alternative.
+ 
+-Kirjaudu ensin itse sivuston vieraskirjaan X:llä. Hae sitten Supabasen SQL Editorissa:
++## Public configuration
+ 
+-```sql
+-select id, handle, display_name
+-from public.wooflab_profiles;
+-```
+-
+-Kopioi oman profiilisi `id` ja korvaa alla oleva esimerkkiteksti sillä:
+-
+-```sql
+-insert into wooflab_private.admins(user_id)
+-values ('OMA-SUPABASE-USER-UUID')
+-on conflict (user_id) do nothing;
+-```
+-
+-Päivitä vieraskirjasivu. Näet ylläpitäjän ilmoituksen ja poistopainikkeet myös
+-muiden kommenteissa. Ylläpitäjäksi ei voi ryhtyä selainasetuksia tai X:n
+-profiilin nimeä muuttamalla. Älä anna vierailijoille private-skeeman käyttöoikeuksia.
++`public/site-config.json` contains browser-visible settings. The Supabase URL
++and **publishable key** are intentionally public; access is controlled by the
++database grants, RLS policies, and authentication checks.
+ 
+-## 9. Vieraskirjan säännöt ja tallennus
++Keep Supabase secret/service-role keys and the X Client Secret out of this
++repository and out of `VITE_` variables. X credentials belong in the Supabase
++provider settings. See [SECURITY.md](SECURITY.md) for reporting a vulnerability.
+ 
+-- Kaikki saavat lukea julkiset viestit ilman kirjautumista.
+-- Vain X-identiteetillä kirjautunut voi kirjoittaa.
+-- Kommentti julkaistaan heti. Pituus on 1–1 000 merkkiä.
+-- Kirjoittajan tiedot synkronoidaan luotetusta `auth.identities`-tiedosta,
+-  ei käyttäjän itse muokattavista profiilimetatiedoista.
+-- Viestin kirjoittaja, tunniste ja aika määräytyvät tietokannassa.
+-- Lähetysväli on vähintään 30 sekuntia käyttäjää kohti. Viestin poistaminen
+-  tai samanaikaiset pyynnöt eivät ohita rajoitusta.
+-- Kirjoittaja saa poistaa oman viestinsä, ylläpitäjä kaikki viestit.
+-- Kommenttiteksti näytetään tekstinä, ei HTML:nä.
+-- Uloskirjautuminen ei poista kommentteja.
+-- Auth-käyttäjän poistaminen Supabasen hallinnassa poistaa myös hänen
+-  profiilinsa, kommenttinsa ja lähetysrajoitustietonsa.
+-
+-Supabase-projektissa käytetään vain julkista frontend-avainta ja tietokannan
+-RLS-oikeuksia. SQL-tiedosto on oleellinen osa toimintaa; avaimen lisääminen
+-yksinään ei luo vieraskirjan tauluja tai käyttöoikeuksia.
+-
+-## 10. Projektin rakenne
++## Project map
+ 
+ ```text
+-index.html                 Etusivu ja Byte-tarina
+-guestbook/index.html       Julkinen vieraskirja
+-auth/callback/index.html   X-kirjautumisen paluusivu
+-privacy/index.html         Tietosuojateksti
+-terms/index.html           Vieraskirjan säännöt
+-404.html                   Oma virhesivu
+-src/                       Tyylit, sivujen JavaScript ja pienet työkalut
+-src/partials/              Yhteinen ylä- ja alatunniste
+-public/images/             Kolme uutta Byte-kuvaa ja brändikuvat
+-public/site-config.json    Julkiset sivusto- ja Supabase-asetukset
+-public/_headers            Cloudflare-välimuisti- ja suojausotsakkeet
+-supabase/migrations/       Tietokanta, oikeudet ja rajapintafunktiot
+-test/                      PostgreSQL-oikeus- ja JavaScript-testit
+-dist/                      Valmis julkaistava sivusto
++index.html                 Home, Byte's story, and experiments
++guestbook/                 Public guestbook page
++auth/callback/             Authentication callback page
++privacy/ and terms/        Privacy information and guestbook rules
++src/                       Styles, page scripts, and shared partials
++public/                    Images, icons, fonts, headers, and public settings
++supabase/migrations/       Database tables, permissions, and functions
++test/                      Tool, validation, and database tests
++scripts/                   Production-build checks
++DEPLOYMENT.md              Default deployment guide in English
++docs/                      English and Finnish setup guides
+ ```
+ 
+-## 11. Tarkistukset ennen julkista käyttöä
+-
+-Paketin tuotantobuild, paikalliset linkit ja tietokantaoikeudet on tarkistettu.
+-Tietokantatestit suoritetaan oikealla PostgreSQL-moottorilla PGlitessa.
+-Omaa Supabase- tai X-tiliäsi ei ole luotu tai yhdistetty tämän paketin tekemisessä.
+-X:n todellinen kirjautumiskierros pitää siksi testata omien asetusten jälkeen.
+-Tässä ympäristössä ei ollut selainautomaatiota käytettävissä; ulkoasua ei
+-ole tarkistettu oikeassa selaimessa.
+-
+-Kokeile käyttöönotossa:
+-
+-1. Etusivu ja mobiilivalikko puhelimessa.
+-2. Focus Fetchin käynnistys, tauko ja nollaus; Idea Fetchin ideat.
+-3. Vieraskirjan lukeminen yksityisessä selainikkunassa.
+-4. X-kirjautuminen ja kommentin lähetys.
+-5. Viestin näkyminen uloskirjautumisen jälkeen toisessa ikkunassa.
+-6. Oman viestin poisto ja ylläpitäjän poistotoiminto.
+-7. Julkisen yhteystiedon ja tietosuojatekstin vastaavuus omiin tietoihisi.
+-
+-## Viralliset ohjeet
+-
+-- [Supabase: X / Twitter OAuth 2.0](https://supabase.com/docs/guides/auth/social-login/auth-twitter)
+-- [Supabase: RLS-oikeudet](https://supabase.com/docs/guides/database/postgres/row-level-security)
+-- [Supabase: Free-hinnasto ja kiintiöt](https://supabase.com/pricing)
+-- [Cloudflare Pages: Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/)
+-- [Cloudflare Pages: build-asetukset](https://developers.cloudflare.com/pages/configuration/build-configuration/)
+-- [Cloudflare Pages: omat domainit](https://developers.cloudflare.com/pages/configuration/custom-domains/)
+-- [Vite: staattinen julkaisu](https://vite.dev/guide/static-deploy)
++## Contributing and licenses
++
++Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a change.
++Third-party notices and included dependency licenses are listed in
++[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
++
++No open-source license has been selected for the WoofLab-specific code,
++character, or artwork. Byte is fictional; the character illustrations were
++generated for this project.
+diff --git a/SECURITY.md b/SECURITY.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a54dace75833babd6a868cf5f0f7b69a46c98225
+--- /dev/null
++++ b/SECURITY.md
+@@ -0,0 +1,31 @@
++# Security
++
++## Report a vulnerability
++
++For a suspected vulnerability, use GitHub's **Security → Advisories → Report a
++vulnerability** option if it is available on this repository. If private
++reporting is unavailable, open an issue asking for a private reporting channel
++without publishing reproduction details, credentials, or personal data.
++
++Include the affected page or component, a minimal reproduction, the expected
++impact, and the commit or version you tested. Please use your own accounts and
++test data when reproducing an issue.
++
++## Public configuration and credentials
++
++The Supabase project URL and publishable key in browser configuration are
++public by design. Database grants, row-level security policies, trusted X
++identities, and database functions control guestbook access.
++
++Supabase secret/service-role keys, X Client Secrets, database passwords, and
++personal access tokens are privileged credentials. They must not appear in
++browser files, `VITE_` variables, Git history, or public reports. X OAuth
++credentials are configured in Supabase Auth.
++
++## Project checks
++
++The existing database tests exercise public reads, authenticated writes,
++comment ownership, moderation, and posting limits in an isolated PGlite
++database. Production configuration validation rejects recognizable privileged
++Supabase keys. These checks do not replace testing the real OAuth flow or
++reviewing a production Supabase project's configuration.
+diff --git a/docs/SETUP.fi.md b/docs/SETUP.fi.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..5b46a4e8de7b4d2b3b2f3ab5a9b741ad203839cf
+--- /dev/null
++++ b/docs/SETUP.fi.md
+@@ -0,0 +1,169 @@
++# WoofLabin käyttöönotto
++
++[Deploy-ohje (English, oletus)](../DEPLOYMENT.md) ·
++[Takaisin projektiin](../README.md) · [English setup guide](SETUP.md)
++
++Sivusto: [wooflab.eu](https://wooflab.eu).
++Lähdekoodi: [BOT-TI/wooflab](https://github.com/BOT-TI/wooflab).
++
++Jos asennat oman kopion sivustosta, käytä omaa verkkotunnusta,
++Supabase-projektia ja X-sovellusta.
++
++## 1. Paikallinen kehitys
++
++Suositus on Node.js 22.18.0 tai uudempi tuettu versio; vähimmäisversio on 22.12.0.
++Avaa terminaali kansiossa, jossa `package.json` sijaitsee:
++
++```sh
++npm ci
++npm run dev
++```
++
++Vite näyttää paikallisen osoitteen, tavallisesti `http://localhost:5173`.
++
++```sh
++npm test
++npm run build
++npm run check
++npm run preview
++```
++
++Testit käyttävät erillistä paikallista PGlite-tietokantaa. Ne eivät ota
++yhteyttä tuotannon Supabase-tietokantaan. `check` ajetaan buildin jälkeen.
++
++## 2. Supabase ja tietokanta
++
++1. Luo projekti [Supabasessa](https://supabase.com/dashboard). Pienen sivuston
++   lähtökohdaksi voi valita Free-paketin; tarkista sen ajantasaiset kiintiöt ja
++   käyttämättömien projektien tauotuskäytäntö [hinnastosta](https://supabase.com/pricing).
++2. Avaa **SQL Editor** ja suorita koko
++   [001_guestbook.sql](../supabase/migrations/001_guestbook.sql).
++3. Avaa projektin **Connect**-ikkuna. Kopioi **Project URL** ja
++   **Publishable key**, joka alkaa `sb_publishable_`. Avaimet löytyvät myös
++   kohdasta **Settings → API Keys**.
++
++SQL luo vieraskirjan taulut, käyttöoikeudet, RLS-säännöt ja rajapintafunktiot.
++Migraation voi ajaa uudelleen. Pelkkä avaimen lisääminen ei luo tietokantaa.
++
++## 3. X-kirjautuminen
++
++1. Avaa Supabasessa **Authentication → Sign In / Providers →
++   X / Twitter (OAuth 2.0)**. Kopioi siellä näkyvä callback-osoite.
++2. Luo sovellus [X Developer Portalissa](https://developer.x.com/).
++3. Avaa **User authentication settings**. Valitse **Web App**, OAuth 2.0 ja
++   **Request email from users** päälle. Sähköpostia ei julkaista vieraskirjassa.
++4. Täytä X-sovelluksen osoitteet:
++
++   | Kenttä | Arvo WoofLabin tuotannossa |
++   | --- | --- |
++   | Callback / Redirect URL | Supabasesta kopioitu callback-osoite |
++   | Website | `https://wooflab.eu` |
++   | Terms of service | `https://wooflab.eu/terms/` |
++   | Privacy policy | `https://wooflab.eu/privacy/` |
++
++5. Kopioi **OAuth 2.0 Client ID** ja **Client Secret** Supabasen X-asetuksiin.
++   Ota palveluntarjoaja käyttöön ja tallenna.
++6. Avaa Supabasessa **Authentication → URL Configuration**:
++
++   | Asetus | Arvo |
++   | --- | --- |
++   | Site URL | `https://wooflab.eu` |
++   | Redirect URL | `https://wooflab.eu/auth/callback/` |
++   | Valinnainen paikallinen Redirect URL | `http://localhost:5173/auth/callback/` |
++
++X palauttaa käyttäjän Supabasen `https://PROJEKTISI.supabase.co/auth/v1/callback`
++-osoitteeseen. Supabase palauttaa käyttäjän WoofLabin `/auth/callback/`-sivulle.
++Nämä ovat eri osoitteet. X:n API-pääsyn ehdot ja mahdolliset maksut määräytyvät
++erikseen Supabasen paketista.
++
++## 4. Sivuston julkiset asetukset
++
++Muokkaa [public/site-config.json](../public/site-config.json):
++
++```json
++{
++  "supabaseUrl": "https://PROJEKTISI.supabase.co",
++  "supabasePublishableKey": "sb_publishable_OMA_JULKINEN_AVAIN",
++  "contactEmail": "",
++  "operatorName": "WoofLab"
++}
++```
++
++Lisää toimiva yhteyssähköposti ja sivuston ylläpitäjän nimi omien tietojesi
++mukaan. Yhteysosoite näkyy alatunnisteessa ja tietosuojasivulla, kun se on täytetty.
++Tarkista myös, että tietosuojasivun sisältö vastaa sivustosi toimintaa.
++
++Säilytä käytössä olevan sivuston asetukset päivityksissä. Git-julkaisussa
++muokataan `public/site-config.json`-tiedostoa; build kopioi sen `dist`-kansioon.
++
++Vaihtoehtoisesti Cloudflaren julkiset build-muuttujat
++`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` ja `VITE_CONTACT_EMAIL`
++ohittavat vastaavat JSON-arvot. Näihin kuuluu vain selaimelle tarkoitettuja
++arvoja. X:n Client Secret kuuluu Supabasen palveluntarjoajan asetuksiin.
++Supabasen secret/service-role-avaimia ei laiteta sivuston tiedostoihin.
++
++## 5. Julkaisu GitHubista Cloudflare Pagesiin
++
++1. Pushaa lähdekoodi GitHub-repositoryn `main`-haaraan.
++2. Avaa Cloudflaressa **Workers & Pages → Create application → Pages →
++   Connect to Git** ja valitse repository.
++3. Aseta Pages-projektin nimeksi sama nimi kuin
++   [wrangler.jsonc](../wrangler.jsonc)-tiedoston `name`-kentässä.
++4. Täytä build-asetukset:
++
++   | Asetus | Arvo |
++   | --- | --- |
++   | Production branch | `main` |
++   | Framework preset | `None` |
++   | Build command | `npm run build` |
++   | Build output directory | `dist` |
++   | Root directory | Repon juuri, jossa `package.json` on |
++
++5. Paina **Save and Deploy** ja kokeile etusivua annetussa `pages.dev`-osoitteessa.
++6. Lisää oma verkkotunnus kohdasta **Custom domains**. Apex-domainin DNS-vyöhyke
++   pitää olla samalla Cloudflare-tilillä ja käyttää Cloudflaren nimipalvelimia.
++   Jos domain on vanhassa Pages-projektissa, siirrä liitos uuteen projektin
++   buildin onnistuttua.
++7. Testaa X-kirjautuminen lopullisessa HTTPS-osoitteessa.
++
++Tässä projektissa käytetään **Pagesin Git-integraatiota**. Jos lokissa ajetaan
++`npx wrangler deploy`, julkaisu on käynnistetty Workers Buildsissa. Palaa
++silloin Pagesin käyttöönottoon: oikeassa näkymässä kysytään
++**Build output directory**. Worker-scriptiä ei tarvita.
++
++GitHub Actions tarkistaa projektin. Cloudflare rakentaa ja julkaisee
++`main`-haaran muutokset erikseen; CI ei itsessään estä Cloudflaren julkaisua.
++Direct Upload -projektista Git-integraatioon siirryttäessä luodaan uusi
++Pages-projekti.
++
++## 6. Vieraskirjan ylläpito-oikeus
++
++Kirjaudu sivustolle omalla X-tililläsi kerran. Aja Supabasen SQL Editorissa:
++
++```sql
++select id, handle, display_name
++from public.wooflab_profiles;
++```
++
++Kopioi oman profiilisi UUID ja sijoita se kyselyyn:
++
++```sql
++insert into wooflab_private.admins (user_id)
++values ('OMA-SUPABASE-USER-UUID')
++on conflict (user_id) do nothing;
++```
++
++Päivitä vieraskirja. Ylläpitäjä voi poistaa myös muiden kommentteja.
++
++## 7. Tarkista toiminta
++
++- Etusivu ja mobiilivalikko toimivat.
++- Focus Fetchin ajastus, tauko ja nollaus sekä Idea Fetchin ideat toimivat.
++- Kommentit näkyvät ilman kirjautumista.
++- X-kirjautuminen ja viestin lähettäminen onnistuvat.
++- Viesti näkyy myös uloskirjautumisen jälkeen.
++- Oman kommentin poistaminen ja ylläpitäjän moderointi toimivat.
++
++Kommentit julkaistaan heti. Pituus on 1–1 000 merkkiä ja lähetysväli vähintään
++30 sekuntia käyttäjää kohti. Uloskirjautuminen ei poista viestejä.
++Supabase Auth -käyttäjän poistaminen poistaa myös hänen profiilinsa ja kommenttinsa.
+diff --git a/docs/SETUP.md b/docs/SETUP.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..f8060e0b8be0f09628df0dab5f7a13fbd64428bd
+--- /dev/null
++++ b/docs/SETUP.md
+@@ -0,0 +1,203 @@
++# Setup and deployment
++
++[Deployment guide (English, default)](../DEPLOYMENT.md) ·
++[Back to the project](../README.md) · [Ohjeet suomeksi](SETUP.fi.md)
++
++Production website: [wooflab.eu](https://wooflab.eu).
++Source repository: [BOT-TI/wooflab](https://github.com/BOT-TI/wooflab).
++
++These instructions also cover setting up an independent fork. Use your own
++domain, Supabase project, and X application for a separate deployment.
++
++## 1. Local development
++
++Use Node.js 22.18.0 or a supported newer version; the project requires at least
++22.12.0. Run these commands from the directory containing `package.json`:
++
++```sh
++npm ci
++npm run dev
++```
++
++Vite normally serves the site at `http://localhost:5173`.
++
++```sh
++npm test
++npm run build
++npm run check
++npm run preview
++```
++
++The tests use a local PGlite database and do not contact the production
++Supabase project. `npm run check` requires an existing production build.
++
++## 2. Supabase database
++
++1. Create a project in the [Supabase dashboard](https://supabase.com/dashboard).
++   The Free plan is an option for a small deployment; check its current limits
++   and inactivity policy in the [pricing information](https://supabase.com/pricing).
++2. Open **SQL Editor**, create a query, and run the complete contents of
++   [001_guestbook.sql](../supabase/migrations/001_guestbook.sql).
++3. The migration creates profiles, comments, private administrator and rate-limit
++   tables, grants, RLS policies, and the guestbook functions. It can be re-run.
++4. Open the project's **Connect** dialog to copy the project URL and a
++   **publishable key**. Keys are also available under **Settings → API Keys**.
++
++Apply the migration before testing comments. Adding the frontend configuration
++does not create database tables or grant access by itself.
++
++## 3. X OAuth 2.0
++
++The application uses Supabase's **X / Twitter (OAuth 2.0)** provider (`x`).
++
++1. In Supabase, open **Authentication → Sign In / Providers →
++   X / Twitter (OAuth 2.0)** and copy the callback URL shown there.
++2. Create or open your app in the [X Developer Portal](https://developer.x.com/).
++3. Open **User authentication settings** and configure a **Web App** using
++   OAuth 2.0. Enable **Request email from users**, as required by the Supabase
++   integration. Email addresses are not displayed in the guestbook.
++4. Set the X app's callback URL to the address copied from Supabase:
++
++   ```text
++   https://YOUR-PROJECT.supabase.co/auth/v1/callback
++   ```
++
++5. For the WoofLab deployment, configure these other app URLs:
++
++   | Setting | URL |
++   | --- | --- |
++   | Website | `https://wooflab.eu` |
++   | Terms of service | `https://wooflab.eu/terms/` |
++   | Privacy policy | `https://wooflab.eu/privacy/` |
++
++6. Copy the **OAuth 2.0 Client ID** and **Client Secret** into Supabase's X
++   provider settings, enable the provider, and save.
++7. In Supabase's **Authentication → URL Configuration**, set:
++
++   | Setting | URL |
++   | --- | --- |
++   | Site URL | `https://wooflab.eu` |
++   | Allowed redirect URL | `https://wooflab.eu/auth/callback/` |
++   | Optional local redirect URL | `http://localhost:5173/auth/callback/` |
++
++X returns users to Supabase's `/auth/v1/callback`. Supabase returns them to the
++website's `/auth/callback/`. These are two distinct addresses.
++
++For authentication on a Pages preview, explicitly allow that preview's exact
++callback URL in Supabase. Use the production domain when testing production
++sign-in. X access requirements and any API charges are separate from Supabase.
++
++## 4. Website configuration
++
++Configure [public/site-config.json](../public/site-config.json):
++
++```json
++{
++  "supabaseUrl": "https://YOUR-PROJECT.supabase.co",
++  "supabasePublishableKey": "sb_publishable_YOUR_PUBLIC_KEY",
++  "contactEmail": "",
++  "operatorName": "WoofLab"
++}
++```
++
++Use your real contact email and appropriate operator name for your deployment.
++The contact address is displayed in the footer and privacy page when provided.
++Keep the privacy information consistent with the services and data you use.
++
++For an existing deployment, preserve its configured values when updating the
++project. The build copies this file to `dist/site-config.json`.
++
++Alternatively, these public build-time variables override the corresponding
++JSON values:
++
++| Variable | Value |
++| --- | --- |
++| `VITE_SUPABASE_URL` | Supabase project URL |
++| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key |
++| `VITE_CONTACT_EMAIL` | Public contact email |
++
++Use only browser-safe values here. Supabase secret/service-role keys belong in
++trusted backend services; the X Client Secret belongs in Supabase's provider
++configuration. The build rejects recognizable privileged Supabase keys.
++
++## 5. GitHub → Cloudflare Pages
++
++1. Push the source files to your GitHub repository with a `main` branch.
++2. In Cloudflare, open **Workers & Pages → Create application → Pages →
++   Connect to Git**. Choose GitHub and authorize the repository.
++3. Set the Pages project name to the `name` value in
++   [wrangler.jsonc](../wrangler.jsonc).
++4. Use these build settings:
++
++   | Setting | Value |
++   | --- | --- |
++   | Production branch | `main` |
++   | Framework preset | `None` |
++   | Build command | `npm run build` |
++   | Build output directory | `dist` |
++   | Root directory | Repository root, where `package.json` is located |
++
++5. Save and deploy. Check the homepage at the resulting `pages.dev` URL.
++6. Open **Custom domains** and add your domain. For the apex domain to use
++   Pages, its DNS zone must be on the same Cloudflare account and use the
++   assigned Cloudflare nameservers. If a domain is attached to an older Pages
++   project, move that domain association to the new project after it builds.
++7. Test the guestbook on the final HTTPS domain.
++
++The successful Pages setup asks for a **build output directory**. A deployment
++log running `npx wrangler deploy` is a Workers Builds configuration; return to
++the Pages setup for this repository. No Worker entry-point script is needed.
++
++GitHub Actions validates the project, while Cloudflare's Git integration builds
++and deploys it separately. The CI workflow is not a deployment gate.
++
++A Direct Upload Pages project cannot be converted into a Git-integrated
++project. Create a new Pages project when changing between those workflows.
++
++For an intentionally manual Pages deployment, the repository also includes
++`pages:login`, `pages:create`, and `deploy` npm scripts. The `deploy` script
++targets the Pages project named `wooflab`; adjust that target if using another
++project name. Git-integrated deployment does not use this script.
++
++## 6. Guestbook administrator
++
++Sign in to the website with your own X account once. In Supabase SQL Editor:
++
++```sql
++select id, handle, display_name
++from public.wooflab_profiles;
++```
++
++Find your own profile and use its UUID in this query:
++
++```sql
++insert into wooflab_private.admins (user_id)
++values ('YOUR-SUPABASE-USER-UUID')
++on conflict (user_id) do nothing;
++```
++
++Refresh the guestbook. An administrator can remove other users' comments.
++Only grant administrator access to accounts you control or explicitly trust.
++
++## 7. Verify a deployment
++
++- Open the homepage and menu on desktop and mobile.
++- Try starting, pausing, and resetting Focus Fetch; generate an Idea Fetch idea.
++- Read the guestbook while signed out.
++- Sign in with X, post a comment, and confirm it remains visible after sign-out.
++- Sign back in and delete your own comment; verify administrator moderation
++  with the administrator account.
++- Open `/guestbook/`, `/privacy/`, `/terms/`, and `/auth/callback/` directly.
++
++Comments are public immediately. The database limits comments to 1–1,000
++characters and one post per 30 seconds per user. Signing out leaves comments
++in place. Removing a user from Supabase Auth cascades to that user's profile,
++comments, and private rate-limit state.
++
++## Official references
++
++- [Supabase X OAuth 2.0](https://supabase.com/docs/guides/auth/social-login/auth-twitter)
++- [Supabase API keys](https://supabase.com/docs/guides/api/api-keys)
++- [Supabase row-level security](https://supabase.com/docs/guides/database/postgres/row-level-security)
++- [Cloudflare Pages Git integration](https://developers.cloudflare.com/pages/get-started/git-integration/)
++- [Cloudflare Pages custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
+diff --git a/package-lock.json b/package-lock.json
+index d12cc3c50304fb8ebad6fa211d3746001bc1bb54..7a933f179dae960d8b46f1f8a8147dd63d2af6fa 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1,12 +1,12 @@
+ {
+   "name": "wooflab",
+-  "version": "1.0.1",
++  "version": "1.0.0",
+   "lockfileVersion": 3,
+   "requires": true,
+   "packages": {
+     "": {
+       "name": "wooflab",
+-      "version": "1.0.1",
++      "version": "1.0.0",
+       "dependencies": {
+         "@supabase/supabase-js": "2.118.0"
+       },
+diff --git a/package.json b/package.json
+index 04ab41349994d336f17cfb1dc5f62de89fbe8e8d..e7738f85b954bfd79ea670f427d8f80ac331d1b4 100644
+--- a/package.json
++++ b/package.json
+@@ -1,9 +1,18 @@
+ {
+   "name": "wooflab",
+-  "version": "1.0.1",
++  "version": "1.0.0",
+   "private": true,
+   "type": "module",
+   "description": "Small paws. Big ideas. A lightweight creative playground for wooflab.eu.",
++  "homepage": "https://wooflab.eu",
++  "repository": {
++    "type": "git",
++    "url": "git+https://github.com/BOT-TI/wooflab.git"
++  },
++  "bugs": {
++    "url": "https://github.com/BOT-TI/wooflab/issues"
++  },
++  "keywords": ["wooflab", "vite", "cloudflare-pages", "supabase", "guestbook"],
+   "engines": { "node": ">=22.12.0" },
+   "scripts": {
+     "dev": "vite --host 0.0.0.0",
