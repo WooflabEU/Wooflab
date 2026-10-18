@@ -122,7 +122,7 @@ configuration. The build rejects recognizable privileged Supabase keys.
 
 ## 5. GitHub → Cloudflare Pages
 
-1. Push the source files to your GitHub repository with a `main` branch.
+1. Push the source files to your GitHub repository with a `master` branch.
 2. In Cloudflare, open **Workers & Pages → Create application → Pages →
    Connect to Git**. Choose GitHub and authorize the repository.
 3. Set the Pages project name to the `name` value in
@@ -131,7 +131,7 @@ configuration. The build rejects recognizable privileged Supabase keys.
 
    | Setting | Value |
    | --- | --- |
-   | Production branch | `main` |
+   | Production branch | `master` |
    | Framework preset | `None` |
    | Build command | `npm run build` |
    | Build output directory | `dist` |

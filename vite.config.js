@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { validatePublicConfig } from './src/lib/validation.js';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
+const animationNotices = readFileSync(`${root}licenses/gsap-notices.txt`, 'utf8');
 
 export default defineConfig({
   plugins: [{
@@ -20,6 +21,14 @@ export default defineConfig({
     transformIndexHtml(html) {
       return html.replace(/<!-- partial:(header|footer) -->/g, (_, name) =>
         readFileSync(`${root}src/partials/${name}.html`, 'utf8'));
+    },
+    generateBundle(_options, bundle) {
+      // Preserve vendor attribution after the production minifier has run.
+      for (const output of Object.values(bundle)) {
+        if (output.type === 'chunk' && Object.keys(output.modules).some(id => id.replaceAll('\\', '/').includes('/node_modules/gsap/'))) {
+          output.code = `${animationNotices}\n${output.code}`;
+        }
+      }
     },
   }],
   // These are real static pages: direct navigation works on Cloudflare Pages.

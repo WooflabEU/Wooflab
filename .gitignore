@@ -1,4 +1,7 @@
 node_modules/
+*.patch
+update-info.json
+OHJEET.fi.md
 dist/
 .wrangler/
 .env

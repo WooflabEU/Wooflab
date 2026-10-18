@@ -7,8 +7,8 @@ English; a [Finnish setup guide](docs/SETUP.fi.md) is also available.
 
 ## Before you start
 
-For a fresh repository created from a project export, start with
-[Create a clean GitHub repository](docs/RESTORE-REPOSITORY.md).
+For this ZIP update, start with [Update the existing master branch](UPDATE.md).
+Keep the existing repository and commit history.
 
 You need a GitHub repository containing the project, a Cloudflare account,
 and a Supabase project with an X OAuth 2.0 application for the guestbook.
@@ -58,7 +58,7 @@ npm run build
 npm run check
 ```
 
-Commit and push the source to your GitHub repository's `main` branch.
+Commit and push the source to your GitHub repository's `master` branch.
 Cloudflare will build `dist/` from the source files.
 
 ## 4. Connect GitHub to Cloudflare Pages
@@ -71,7 +71,7 @@ Cloudflare will build `dist/` from the source files.
 
    | Setting | Value |
    | --- | --- |
-   | Production branch | `main` |
+   | Production branch | `master` |
    | Framework preset | `None` |
    | Build command | `npm run build` |
    | Build output directory | `dist` |
@@ -112,7 +112,7 @@ git commit -m "Update WoofLab"
 git push
 ```
 
-Cloudflare automatically builds and deploys pushes to `main`. GitHub Actions
+Cloudflare automatically builds and deploys pushes to `master`. GitHub Actions
 runs validation separately; it does not gate Cloudflare deployments.
 
 ## Troubleshooting

@@ -1,61 +1,116 @@
 <!doctype html>
-<html lang="en" id="top">
+<html lang="en" id="top" class="slideshow-page">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WoofLab — Small paws. Big ideas.</title>
-  <meta name="description" content="Useful little tools, curious experiments, and a fictional dog with big ideas. Welcome to WoofLab.">
-  <meta name="theme-color" content="#acff00">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://wooflab.eu/">
-  <meta property="og:type" content="website"><meta property="og:title" content="WoofLab — Small paws. Big ideas.">
-  <meta property="og:description" content="Useful little tools. Curious experiments. Occasionally distracted by treats.">
-  <meta property="og:url" content="https://wooflab.eu/"><meta property="og:image" content="https://wooflab.eu/images/wooflab-social.jpg">
-  <meta property="og:image:width" content="1200"><meta property="og:image:height" content="400">
+  <meta name="description" content="Small tools. Curious experiments. Meet Byte, the fictional dog behind WoofLab.">
+  <meta name="theme-color" content="#171813">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://wooflab.eu/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WoofLab — Small paws. Big ideas.">
+  <meta property="og:description" content="Small tools. Curious experiments. One very good fictional dog.">
+  <meta property="og:url" content="https://wooflab.eu/">
+  <meta property="og:image" content="https://wooflab.eu/images/wooflab-social.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="400">
   <meta name="twitter:card" content="summary_large_image">
   <script type="module" src="/src/main.js"></script>
 </head>
 <body data-page="home">
-  <div class="home-header-wrap">
-    <!-- partial:header -->
-  </div>
-    <main id="main"><div class="hero-wrap">
-      <section class="hero section-shell" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> A SMALL STUDIO. A CURIOUS MIND.</p>
-          <h1 id="hero-title">Small paws.<br>Big ideas<span class="title-period">.</span></h1>
-          <p class="hero-description">Useful little tools. Curious experiments.<br>Occasionally distracted by treats.</p>
-          <div class="hero-actions"><a class="button button-dark" href="#lab">Explore the lab <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></a><a class="text-link" href="/guestbook/">Leave a pawprint <span aria-hidden="true">↗</span></a></div>
-          <div class="hero-footnote"><svg aria-hidden="true"><use href="/icons.svg#spark"></use></svg><span>Built one paw at a time.</span></div>
+  <!-- partial:header -->
+  <nav class="journey-rail" aria-label="Explore the five scenes">
+    <a class="scene-link" href="#welcome" aria-label="Scene 1: Welcome" aria-current="location"><span></span></a>
+    <a class="scene-link" href="#lab" aria-label="Scene 2: Focus Fetch"><span></span></a>
+    <a class="scene-link" href="#ideas" aria-label="Scene 3: Idea Fetch"><span></span></a>
+    <a class="scene-link" href="#byte" aria-label="Scene 4: Meet Byte"><span></span></a>
+    <a class="scene-link" href="#pawprints" aria-label="Scene 5: Guestbook"><span></span></a>
+  </nav>
+  <div class="journey-counter" aria-hidden="true"><span data-scene-number>01</span><span class="counter-divider"></span><span>05</span></div>
+  <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false" aria-label="Reduce animations" hidden><svg aria-hidden="true"><use href="/icons.svg#spark"></use></svg><span data-motion-label>Motion on</span></button>
+  <main id="main">
+    <section class="scene scene-welcome" id="welcome" data-scene data-scene-theme="dark" aria-labelledby="welcome-title">
+      <div class="scene-inner">
+        <div class="scene-copy">
+          <p class="scene-kicker"><span class="scene-status" aria-hidden="true"></span> WOOFLAB / A LITTLE CURIOSITY</p>
+          <h1 id="welcome-title">Small paws.<br><span>Big ideas.</span></h1>
+          <p class="scene-description">Small tools. Curious experiments.</p>
+          <a class="scene-action" href="#lab">Explore the lab <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></a>
         </div>
-        <div class="hero-art">
-          <span class="handwritten hero-annotation">meet the chief<br>treat officer <svg aria-hidden="true"><use href="/icons.svg#curve"></use></svg></span>
-          <div class="hero-photo"><img src="/images/byte-coding-1254.webp" srcset="/images/byte-coding-560.webp 560w, /images/byte-coding-1120.webp 1120w, /images/byte-coding-1254.webp 1254w" sizes="(min-width: 1500px) 650px, (min-width: 1376px) 642px, (min-width: 1101px) calc(51.22vw - 63.3px), (min-width: 761px) calc(51.22vw - 46px), (min-width: 560px) 520px, calc(100vw - 40px)" width="1254" height="1254" alt="Byte, a curly tan dog, working at a WoofLab laptop with a tennis ball on the desk" fetchpriority="high" decoding="async"></div>
-          <span class="character-tag"><svg aria-hidden="true"><use href="/icons.svg#paw"></use></svg> BYTE / FOUNDER &amp; GOOD DOG</span>
-          <svg class="hero-spark" aria-hidden="true"><use href="/icons.svg#spark"></use></svg>
+        <div class="scene-media welcome-media">
+          <div class="art-halo" aria-hidden="true"></div>
+          <span class="art-coordinate" aria-hidden="true">W / 001</span>
+          <picture class="byte-figure"><img src="/images/byte-coding-1254.webp" srcset="/images/byte-coding-560.webp 560w, /images/byte-coding-1120.webp 1120w, /images/byte-coding-1254.webp 1254w" sizes="(max-width: 760px) 88vw, (min-width: 1440px) 640px, 48vw" width="1254" height="1254" alt="Byte, a curly tan dog, at a laptop with a bright green tennis ball" fetchpriority="high" decoding="async"></picture>
+          <span class="art-label">BYTE / CHIEF TREAT OFFICER <span aria-hidden="true">↗</span></span>
         </div>
-      </section>
-  </div>
-      <div class="ribbon" aria-hidden="true"><div><span>BUILD SOMETHING</span><svg><use href="/icons.svg#paw"></use></svg><span>PLAY A LITTLE</span><svg><use href="/icons.svg#paw"></use></svg><span>TAKE A WALK</span><svg><use href="/icons.svg#paw"></use></svg><span>REPEAT</span></div></div>
-      <section class="lab-section section-shell section-space" id="lab" aria-labelledby="lab-title">
-        <div class="section-heading"><div><p class="eyebrow">01 / THE LAB</p><h2 id="lab-title">Little things.<br>Worth a try.</h2></div><p>A couple of tiny browser experiments.<br>Pick one. Play around. See what happens.</p></div>
-        <div class="experiment-grid">
-          <article class="experiment-card experiment-focus">
-            <div class="experiment-visual" aria-hidden="true"><div class="mini-timer"><span class="timer-ears"></span><span>25:00</span><div class="mini-progress"><i></i></div><small>ONE THING AT A TIME.</small></div><span class="visual-spark">✳</span></div>
-            <div class="experiment-content"><div class="card-meta"><span>01 / FOCUS TOOL</span><span class="live-pill"><i></i> Try it now</span></div><h3>Focus Fetch</h3><p>A tiny timer for doing one thing well. A short sprint, then a well-earned walk.</p><button class="card-link" type="button" data-open-tool="focus">Find your focus <span aria-hidden="true">↗</span></button></div>
-          </article>
-          <article class="experiment-card experiment-ideas">
-            <div class="experiment-visual" aria-hidden="true"><div class="idea-note"><span>WHAT IF...</span><strong>the next idea<br>started small?</strong><svg><use href="/icons.svg#bulb"></use></svg></div><span class="note-arrow">↗</span></div>
-            <div class="experiment-content"><div class="card-meta"><span>02 / IDEA GENERATOR</span><span class="live-pill"><i></i> Try it now</span></div><h3>Idea Fetch</h3><p>Staring at a blank page? Fetch a small, curious starting point for your next project.</p><button class="card-link" type="button" data-open-tool="ideas">Fetch an idea <span aria-hidden="true">↗</span></button></div>
-          </article>
+      </div>
+      <a class="scroll-cue" href="#lab"><span aria-hidden="true">↓</span> SCROLL TO EXPLORE</a>
+      <span class="scene-background-word" aria-hidden="true">WOOF.</span>
+    </section>
+    <section class="scene scene-focus" id="lab" data-scene data-scene-theme="light" aria-labelledby="focus-scene-title">
+      <div class="scene-inner">
+        <div class="scene-copy">
+          <p class="scene-kicker">01 / FOCUS FETCH</p>
+          <h2 id="focus-scene-title">One thing.<br><span>Done well.</span></h2>
+          <p class="scene-description">A little focus. Then a walk.</p>
+          <button class="scene-action" type="button" data-open-tool="focus">Start focusing <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></button>
         </div>
-        <p class="lab-note"><svg aria-hidden="true"><use href="/icons.svg#bone"></use></svg> Small experiments, made to be used. More when inspiration strikes.</p>
-      </section>
-      <section class="byte-section" id="byte" aria-labelledby="byte-title"><div class="section-shell byte-grid">
-        <div class="byte-art"><span class="handwritten byte-annotation">research &amp;<br>snack development</span><img src="/images/byte-fixing-1254.webp" srcset="/images/byte-fixing-560.webp 560w, /images/byte-fixing-1120.webp 1120w, /images/byte-fixing-1254.webp 1254w" sizes="(min-width: 1376px) 588px, (min-width: 1101px) calc(48.78vw - 83.4px), (min-width: 761px) calc(48.78vw - 49.8px), (min-width: 580px) 540px, calc(100vw - 40px)" width="1254" height="1254" alt="Byte carefully repairing a small green robot-shaped treat dispenser" loading="lazy" decoding="async"><span class="byte-stamp">TESTING BUDGET:<br><strong>DELICIOUS.</strong></span></div>
-        <div class="byte-copy"><p class="eyebrow">02 / BEHIND THE PAWS</p><h2 id="byte-title">Meet Byte.<br>The story is fictional.<br>The curiosity isn't.</h2><p>Meet Byte, WoofLab’s fictional founder and self-appointed Chief Treat Officer.</p><p>Byte’s first invention was an automatic treat dispenser. It worked perfectly until he discovered how to hold the button down. After eating the entire research budget, he decided to try software.</p><p>He founded WoofLab under a desk, between a forgotten charging cable and his favourite tennis ball. It’s his workshop for small tools and curious experiments, supervised with a tilted head and occasional keyboard interference.</p><p>His working philosophy? Follow your curiosity. Make something useful. Take a walk when you get stuck.</p><p class="byte-signoff">Small paws. Big ideas.<br>Absolutely no control around snacks.</p></div>
-      </div></section>
-      <section class="invitation section-shell section-space" aria-labelledby="invitation-title"><div class="invitation-copy"><p class="eyebrow">03 / SAY SOMETHING</p><h2 id="invitation-title">Got an idea?<br>Byte's all ears.</h2><p>A suggestion, a kind word, a very important dog fact. There’s room for it in the guestbook.</p><a class="button button-dark" href="/guestbook/">Leave a pawprint <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></a><p class="small-note">Read every note. Sign in with X to leave yours.</p></div><div class="invitation-art"><img src="/images/byte-ideas-1254.webp" srcset="/images/byte-ideas-560.webp 560w, /images/byte-ideas-1120.webp 1120w, /images/byte-ideas-1254.webp 1254w" sizes="(min-width: 1376px) 605px, (min-width: 1101px) calc(50vw - 83px), (min-width: 761px) calc(50vw - 51px), (min-width: 580px) 540px, calc(100vw - 40px)" width="1254" height="1254" alt="Byte sketching a bone-shaped rocket in a notebook beside dog treats" loading="lazy" decoding="async"></div></section>
-    </main>
-  <!-- partial:footer -->
-  <dialog class="tool-dialog" id="focus-dialog" aria-labelledby="focus-title"><div class="dialog-top"><span class="eyebrow">WOOFLAB / TINY TOOLS</span><button class="icon-button" data-close-dialog aria-label="Close timer"><svg aria-hidden="true"><use href="/icons.svg#close"></use></svg></button></div><h2 id="focus-title">Focus Fetch<span>.</span></h2><p>One thing. A little focus. Then a walk.</p><div class="duration-options" role="group" aria-label="Timer duration"><button type="button" data-duration="25" aria-pressed="true">25 min</button><button type="button" data-duration="15" aria-pressed="false">15 min</button><button type="button" data-duration="5" aria-pressed="false">5 min</button></div><div class="focus-display" id="focus-time" role="timer" aria-label="Time remaining">25:00</div><p id="focus-status" class="tool-status" aria-live="polite">Ready when you are.</p><div class="tool-actions"><button class="button button-dark" id="focus-toggle" type="button">Start focusing <span aria-hidden="true">→</span></button><button class="button button-outline" id="focus-reset" type="button">Reset</button></div><p class="small-note">This timer stays in this tab. Keep it open during your sprint.</p></dialog>
+        <div class="scene-media focus-media" aria-hidden="true">
+          <span class="visual-overline">A LITTLE SPACE TO THINK.</span>
+          <div class="timer-sculpture"><div class="timer-ring"></div><span class="timer-tick"></span><div class="timer-face"><span class="timer-mode">FOCUS FETCH</span><strong>25:00</strong><span class="timer-caption">ONE THING AT A TIME.</span><span class="timer-play">↗</span></div></div>
+          <div class="visual-baseline"><span>MAKE A SMALL START.</span><span>25 MIN</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="scene scene-ideas" id="ideas" data-scene data-scene-theme="lime" aria-labelledby="ideas-scene-title">
+      <div class="scene-inner">
+        <div class="scene-copy">
+          <p class="scene-kicker">02 / IDEA FETCH</p>
+          <h2 id="ideas-scene-title">A spark.<br><span>A start.</span></h2>
+          <p class="scene-description">Fetch your next small idea.</p>
+          <button class="scene-action" type="button" data-open-tool="ideas">Fetch an idea <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></button>
+        </div>
+        <div class="scene-media ideas-media">
+          <span class="idea-orbit" aria-hidden="true">✳</span>
+          <picture class="byte-figure"><img src="/images/byte-ideas-1254.webp" srcset="/images/byte-ideas-560.webp 560w, /images/byte-ideas-1120.webp 1120w, /images/byte-ideas-1254.webp 1254w" sizes="(max-width: 760px) 88vw, (min-width: 1440px) 640px, 48vw" width="1254" height="1254" alt="Byte sketching a bone-shaped rocket in a notebook" loading="lazy" decoding="async"></picture>
+          <span class="art-label">RESEARCH IN PROGRESS <span aria-hidden="true">↗</span></span>
+        </div>
+      </div>
+    </section>
+    <section class="scene scene-byte" id="byte" data-scene data-scene-theme="dark" aria-labelledby="byte-scene-title">
+      <div class="scene-inner">
+        <div class="scene-copy">
+          <p class="scene-kicker">03 / BEHIND THE PAWS</p>
+          <h2 id="byte-scene-title">Meet Byte.<br><span>Good dog.</span></h2>
+          <p class="scene-description">Fictional dog. Real curiosity.</p>
+          <p class="byte-short-story">He invented a treat dispenser, ate the research budget, and turned to software.</p>
+        </div>
+        <div class="scene-media byte-media">
+          <div class="art-halo" aria-hidden="true"></div>
+          <picture class="byte-figure"><img src="/images/byte-fixing-1254.webp" srcset="/images/byte-fixing-560.webp 560w, /images/byte-fixing-1120.webp 1120w, /images/byte-fixing-1254.webp 1254w" sizes="(max-width: 760px) 88vw, (min-width: 1440px) 640px, 48vw" width="1254" height="1254" alt="Byte repairing his robot-shaped treat dispenser with a screwdriver" loading="lazy" decoding="async"></picture>
+          <span class="art-label">TESTING BUDGET: DELICIOUS. <span aria-hidden="true">↗</span></span>
+        </div>
+      </div>
+    </section>
+    <section class="scene scene-pawprints" id="pawprints" data-scene data-scene-theme="light" aria-labelledby="pawprints-title">
+      <div class="scene-inner">
+        <div class="scene-copy">
+          <p class="scene-kicker">04 / SAY SOMETHING</p>
+          <h2 id="pawprints-title">Leave a<br><span>pawprint.</span></h2>
+          <p class="scene-description">A hello. An idea. A dog fact.</p>
+          <a class="scene-action" href="/guestbook/">Open the guestbook <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></a>
+          <p class="scene-fineprint">Read every note. Sign in with X to write.</p>
+        </div>
+        <div class="scene-media pawprint-media">
+          <div class="guestbook-preview-heading"><span class="scene-kicker">NOTES FROM THE INTERNET</span><svg aria-hidden="true"><use href="/icons.svg#paw"></use></svg></div>
+          <div class="guestbook-preview" data-guestbook-preview aria-live="polite" aria-busy="false"><p class="preview-state">A little hello goes a long way.</p></div>
+          <a class="preview-all" href="/guestbook/">Every pawprint <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <!-- partial:footer -->
+    </section>
+  </main>
+<dialog class="tool-dialog" id="focus-dialog" aria-labelledby="focus-title"><div class="dialog-top"><span class="eyebrow">WOOFLAB / TINY TOOLS</span><button class="icon-button" data-close-dialog aria-label="Close timer"><svg aria-hidden="true"><use href="/icons.svg#close"></use></svg></button></div><h2 id="focus-title">Focus Fetch<span>.</span></h2><p>One thing. A little focus. Then a walk.</p><div class="duration-options" role="group" aria-label="Timer duration"><button type="button" data-duration="25" aria-pressed="true">25 min</button><button type="button" data-duration="15" aria-pressed="false">15 min</button><button type="button" data-duration="5" aria-pressed="false">5 min</button></div><div class="focus-display" id="focus-time" role="timer" aria-label="Time remaining">25:00</div><p id="focus-status" class="tool-status" aria-live="polite">Ready when you are.</p><div class="tool-actions"><button class="button button-dark" id="focus-toggle" type="button">Start focusing <span aria-hidden="true">→</span></button><button class="button button-outline" id="focus-reset" type="button">Reset</button></div><p class="small-note">This timer stays in this tab. Keep it open during your sprint.</p></dialog>
   <dialog class="tool-dialog" id="ideas-dialog" aria-labelledby="ideas-title"><div class="dialog-top"><span class="eyebrow">WOOFLAB / TINY TOOLS</span><button class="icon-button" data-close-dialog aria-label="Close idea generator"><svg aria-hidden="true"><use href="/icons.svg#close"></use></svg></button></div><h2 id="ideas-title">Idea Fetch<span>.</span></h2><p>Every big idea needs a small starting point.</p><div class="duration-options" role="group" aria-label="Idea category"><button type="button" data-category="useful" aria-pressed="true">Useful</button><button type="button" data-category="playful" aria-pressed="false">Playful</button><button type="button" data-category="makers" aria-pressed="false">For makers</button></div><div class="idea-output" id="idea-output" aria-live="polite"></div><div class="tool-actions"><button class="button button-dark" id="idea-fetch" type="button">Fetch another <svg aria-hidden="true"><use href="/icons.svg#arrow"></use></svg></button><button class="button button-outline" id="idea-copy" type="button">Copy idea</button></div><p class="small-note">A starting point, not a promise. Make it your own.</p></dialog>
 </body></html>

@@ -1,28 +1,19 @@
 import '@fontsource-variable/space-grotesk';
+import './theme.css';
 import './styles.css';
+import './slideshow.css';
 import { getConfig } from './config.js';
 import { toast } from './lib/ui.js';
+import { initSiteShell } from './site-shell.js';
 
 document.documentElement.classList.add('js');
 const page = document.body.dataset.page;
-document.querySelectorAll('[data-year]').forEach(node => { node.textContent = new Date().getFullYear(); });
-document.querySelector(`[data-nav="${page}"]`)?.setAttribute('aria-current', 'page');
-
-const navToggle = document.querySelector('.nav-toggle');
-const nav = document.querySelector('#site-nav');
-function closeNav() {
-  nav?.classList.remove('is-open');
-  navToggle?.setAttribute('aria-expanded', 'false');
-  navToggle?.setAttribute('aria-label', 'Open navigation');
+initSiteShell();
+if (page === 'home') {
+  import('./slideshow.js').then(module => module.initSlideshow()).catch(() => {
+    document.documentElement.dataset.motion = 'reduced';
+  });
 }
-navToggle?.addEventListener('click', () => {
-  const isOpen = nav.classList.toggle('is-open');
-  navToggle.setAttribute('aria-expanded', String(isOpen));
-  navToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
-});
-nav?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeNav));
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeNav(); });
-
 getConfig().then(config => {
   document.querySelectorAll('[data-operator]').forEach(node => { node.textContent = config.operatorName; });
   if (config.contactEmail) {

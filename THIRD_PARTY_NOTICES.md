@@ -11,3 +11,9 @@
 - Byte is a fictional character. The supplied WoofLab character photographs
   were generated for this project and optimized into transparent WebP assets.
 - The small SVG symbols and website interface are native project assets.
+- **GSAP 3.15.0 and ScrollTrigger** provide the homepage animation. They are
+  self-hosted and use the [GSAP Standard License](https://gsap.com/standard-license/),
+  not the MIT license. The original attribution headers are retained in the
+  animation bundle and in `licenses/gsap-notices.txt`.
+- JSDOM is a development-only DOM test dependency; its MIT license remains in
+  its npm package and it is not included in visitor JavaScript.

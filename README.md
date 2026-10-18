@@ -12,7 +12,9 @@ dog with a weakness for snacks and a habit of sitting on the keyboard.
 [Deploy (English)](DEPLOYMENT.md) ·
 [Setup (English)](docs/SETUP.md) ·
 [Ohjeet suomeksi](docs/SETUP.fi.md) ·
-[Logo and brand assets](docs/BRANDING.md)
+[Logo and brand assets](docs/BRANDING.md) ·
+[Apply this update](UPDATE.md) ·
+[Slideshow guide](docs/SLIDESHOW.md)
 
 [![CI](https://github.com/wooflabEU/wooflab/actions/workflows/ci.yml/badge.svg)](https://github.com/wooflabEU/wooflab/actions/workflows/ci.yml)
 
@@ -20,7 +22,10 @@ dog with a weakness for snacks and a habit of sitting on the keyboard.
 
 ## What's here
 
-- A responsive website and the story of WoofLab's fictional founder, Byte.
+- A five-scene, scroll-driven slideshow with minimal English copy and Byte artwork.
+- Motion on/off control, reduced-motion support, native scrolling, and direct scene links.
+- A shared ink-and-lime theme across the guestbook, privacy, house rules,
+  authentication callback, 404 page, header, footer, forms, and dialogs.
 - **Focus Fetch:** a small focus timer with start, pause, and reset controls.
 - **Idea Fetch:** a generator for the next small thing to make.
 - A public guestbook with X OAuth 2.0 sign-in through Supabase.
@@ -35,10 +40,11 @@ limited to one comment every 30 seconds per account in the database.
 | Part | Technology |
 | --- | --- |
 | Website | Vite, HTML, CSS, and vanilla JavaScript |
+| Animation | Self-hosted GSAP ScrollTrigger, loaded only on the homepage |
 | Hosting | Cloudflare Pages, deployed from GitHub |
 | Authentication | Supabase Auth with the X OAuth 2.0 provider |
 | Guestbook | Supabase Postgres, RLS policies, and database functions |
-| Tests | Node.js test runner and PGlite |
+| Tests | Node.js test runner, JSDOM, and PGlite |
 
 The site builds into static files. Database access and authentication are
 handled by Supabase; no Pages Functions or Cloudflare D1 database is required.
@@ -70,7 +76,7 @@ npm run check
 - The project check verifies the generated pages, local links, image files,
   public configuration, and guestbook text rendering.
 
-GitHub Actions runs these checks for pushes to `main` and pull requests.
+GitHub Actions runs these checks for pushes to `master` or `main`, and pull requests.
 
 ## Deploy
 
@@ -82,16 +88,16 @@ Connect this repository to **Cloudflare Pages** with these settings:
 
 | Setting | Value |
 | --- | --- |
-| Production branch | `main` |
+| Production branch | `master` |
 | Framework preset | `None` |
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 | Root directory | Repository root |
 
 The Pages project name must match `name` in `wrangler.jsonc`.
-Cloudflare builds and deploys new commits pushed to `main`.
-To create a fresh repository from a clean source export, follow
-[Create a clean GitHub repository](docs/RESTORE-REPOSITORY.md).
+Cloudflare builds and deploys new commits pushed to `master`.
+To apply this export to the existing repository, follow
+[Update the existing master branch](UPDATE.md).
 For detailed database and authentication configuration, see the
 [English setup guide](docs/SETUP.md). A [Finnish version](docs/SETUP.fi.md)
 is available as an alternative.
@@ -109,14 +115,14 @@ provider settings. See [SECURITY.md](SECURITY.md) for reporting a vulnerability.
 ## Project map
 
 ```text
-index.html                 Home, Byte's story, and experiments
+index.html                 Five fullscreen scenes and tool dialogs
 guestbook/                 Public guestbook page
 auth/callback/             Authentication callback page
 privacy/ and terms/        Privacy information and guestbook rules
 src/                       Styles, page scripts, and shared partials
 public/                    Images, icons, fonts, headers, and public settings
 supabase/migrations/       Database tables, permissions, and functions
-test/                      Tool, validation, and database tests
+test/                      Tools, slideshow, comment preview, and database tests
 scripts/                   Production-build checks
 DEPLOYMENT.md              Default deployment guide in English
 docs/                      English and Finnish setup guides

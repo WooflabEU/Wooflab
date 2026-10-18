@@ -104,7 +104,7 @@ Supabasen secret/service-role-avaimia ei laiteta sivuston tiedostoihin.
 
 ## 5. Julkaisu GitHubista Cloudflare Pagesiin
 
-1. Pushaa lähdekoodi GitHub-repositoryn `main`-haaraan.
+1. Pushaa lähdekoodi GitHub-repositoryn `master`-haaraan.
 2. Avaa Cloudflaressa **Workers & Pages → Create application → Pages →
    Connect to Git** ja valitse repository.
 3. Aseta Pages-projektin nimeksi sama nimi kuin
@@ -113,7 +113,7 @@ Supabasen secret/service-role-avaimia ei laiteta sivuston tiedostoihin.
 
    | Asetus | Arvo |
    | --- | --- |
-   | Production branch | `main` |
+   | Production branch | `master` |
    | Framework preset | `None` |
    | Build command | `npm run build` |
    | Build output directory | `dist` |
@@ -132,7 +132,7 @@ silloin Pagesin käyttöönottoon: oikeassa näkymässä kysytään
 **Build output directory**. Worker-scriptiä ei tarvita.
 
 GitHub Actions tarkistaa projektin. Cloudflare rakentaa ja julkaisee
-`main`-haaran muutokset erikseen; CI ei itsessään estä Cloudflaren julkaisua.
+`master`-haaran muutokset erikseen; CI ei itsessään estä Cloudflaren julkaisua.
 Direct Upload -projektista Git-integraatioon siirryttäessä luodaan uusi
 Pages-projekti.
 

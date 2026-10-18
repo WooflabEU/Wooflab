@@ -1,0 +1,49 @@
+/* One brand palette and one default theme for every page and shared component. */
+:root {
+  color-scheme: dark;
+  --brand-ink: #171813;
+  --brand-paper: #f6f5ee;
+  --brand-lime: #acff00;
+  --color-bg: var(--brand-ink);
+  --color-text: var(--brand-paper);
+  --color-muted: #b5b9a5;
+  --color-line: #3a3d31;
+  --color-surface: #20231b;
+  --color-raised: #292d22;
+  --color-accent: var(--brand-lime);
+  --color-action-text: var(--brand-ink);
+  --color-danger: #ffb4a6;
+  --color-danger-bg: #6b241b;
+  --color-focus: var(--color-accent);
+  --radius: 16px;
+  --radius-lg: 24px;
+  --content-width: 1360px;
+  --page-gutter: clamp(24px, 5vw, 80px);
+}
+
+/* The slideshow can vary its scene color while using the same components. */
+[data-scene-theme="light"] {
+  color-scheme: light;
+  --color-bg: var(--brand-paper);
+  --color-text: var(--brand-ink);
+  --color-muted: #5f6555;
+  --color-line: #cfd1c2;
+  --color-surface: #fffef9;
+  --color-raised: #e9ecdf;
+  --color-accent: #416300;
+  --color-action-text: var(--brand-paper);
+  --color-focus: var(--color-accent);
+}
+
+[data-scene-theme="lime"] {
+  color-scheme: light;
+  --color-bg: var(--brand-lime);
+  --color-text: var(--brand-ink);
+  --color-muted: #3f570d;
+  --color-line: #608e00;
+  --color-surface: #bdff38;
+  --color-raised: #ceff6b;
+  --color-accent: var(--brand-ink);
+  --color-action-text: var(--brand-lime);
+  --color-focus: var(--color-accent);
+}

@@ -1,3 +1,24 @@
+# Changelog
+
+## 1.1.1 — 2026-10-18
+
+- Made the slideshow's ink, warm white and lime palette the default global theme.
+- Rebuilt shared typography, navigation, footer, buttons, forms and dialogs.
+- Applied the theme to the guestbook, privacy, house rules, callback and 404 pages.
+- Added shared navigation tests for all six pages, including Escape focus return.
+- Added build checks that every page loads the same stylesheet and theme color.
+- Preserved the homepage scenes, Byte assets, tool logic, X authentication and database rules.
+
+## 1.1.0 — 2026-10-18
+
+- Rebuilt the homepage as five scroll-driven scenes with short English copy.
+- Added GSAP ScrollTrigger motion, scene navigation, a motion toggle, and reduced-motion handling.
+- Added an on-demand preview of real public guestbook comments with honest empty and error states.
+- Preserved the original Byte assets, W brand, tools, Supabase configuration, X sign-in, and database rules.
+- Added slideshow and comment-preview DOM tests and compressed asset budgets.
+- Aligned Pages scripts and English deployment instructions with the existing master branch.
+- Removed obsolete repository-reset instructions and old delivery files from the export.
+
 # Changes
 
 ## 1.0.3
