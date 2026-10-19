@@ -13,11 +13,11 @@ function updateTimer() {
   const state = timer.snapshot();
   document.querySelector('#focus-time').textContent = formatTime(state.seconds);
   document.querySelector('#focus-toggle').textContent = state.running ? 'Pause sprint' : state.completed ? 'Start another sprint →' : 'Start focusing →';
-  document.title = state.running ? `${formatTime(state.seconds)} · Focus Fetch — WoofLab` : originalTitle;
+  document.title = state.running ? `${formatTime(state.seconds)} · Focus Fetch - WoofLab` : originalTitle;
   if (state.completed && !announcedCompletion) {
     announcedCompletion = true;
     document.querySelector('#focus-status').textContent = 'Good work. Time for a walk.';
-    toast('Sprint complete. Good work — take a little break.');
+    toast('Sprint complete. Good work - take a little break.');
   }
   if (!state.running) { clearInterval(ticker); ticker = undefined; }
 }

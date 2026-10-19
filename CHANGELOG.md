@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 — 2026-10-19
+## 1.2.0 - 2026-10-19
 
 - Added the Woof pack success card after a confirmed guestbook post.
 - Added an optional X composer with the exact pack message and direct post link.
@@ -11,7 +11,7 @@
 - Added integration tests for the guestbook flow; all 56 tests pass.
 - Kept the existing Supabase migration and authentication credentials unchanged.
 
-## 1.1.1 — 2026-10-18
+## 1.1.1 - 2026-10-18
 
 - Made the slideshow's ink, warm white and lime palette the default global theme.
 - Rebuilt shared typography, navigation, footer, buttons, forms and dialogs.
@@ -20,7 +20,7 @@
 - Added build checks that every page loads the same stylesheet and theme color.
 - Preserved the homepage scenes, Byte assets, tool logic, X authentication and database rules.
 
-## 1.1.0 — 2026-10-18
+## 1.1.0 - 2026-10-18
 
 - Rebuilt the homepage as five scroll-driven scenes with short English copy.
 - Added GSAP ScrollTrigger motion, scene navigation, a motion toggle, and reduced-motion handling.
