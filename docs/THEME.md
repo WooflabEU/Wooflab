@@ -20,7 +20,7 @@ the ink background, warm white text and lime accent from the slideshow.
 - Homepage: its five scenes keep their ink, paper and lime compositions.
 - Guestbook: heading, composer, X sign-in/out controls, textarea, comments,
   loading, empty and error states, moderation notice, and delete dialog.
-- Privacy and house rules: shared reading layout and typography.
+- Privacy and Dog House rules: shared reading layout and typography.
 - Authentication callback: success-pending and error states.
 - 404: the same header, typography, buttons and footer.
 - Focus timer and idea generator: shared dark dialog components.

@@ -15,7 +15,7 @@
 
 - Made the slideshow's ink, warm white and lime palette the default global theme.
 - Rebuilt shared typography, navigation, footer, buttons, forms and dialogs.
-- Applied the theme to the guestbook, privacy, house rules, callback and 404 pages.
+- Applied the theme to the guestbook, privacy, Dog House rules, callback and 404 pages.
 - Added shared navigation tests for all six pages, including Escape focus return.
 - Added build checks that every page loads the same stylesheet and theme color.
 - Preserved the homepage scenes, Byte assets, tool logic, X authentication and database rules.

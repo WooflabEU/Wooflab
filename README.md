@@ -24,7 +24,7 @@ dog with a weakness for snacks and a habit of sitting on the keyboard.
 
 - A five-scene, scroll-driven slideshow with minimal English copy and Byte artwork.
 - Motion on/off control, reduced-motion support, native scrolling, and direct scene links.
-- A shared ink-and-lime theme across the guestbook, privacy, house rules,
+- A shared ink-and-lime theme across the guestbook, privacy, Dog House rules,
   authentication callback, 404 page, header, footer, forms, and dialogs.
 - **Focus Fetch:** a small focus timer with start, pause, and reset controls.
 - **Idea Fetch:** a generator for the next small thing to make.
