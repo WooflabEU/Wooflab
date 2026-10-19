@@ -1,7 +1,7 @@
 # Apply the WoofLab update to the existing repository
 
 This export continues the existing `master` branch of
-[WooflabEU/Wooflab](https://github.com/WooflabEU/Wooflab). Keep the current Git
+[WoofLab/Wooflab](https://github.com/WoofLab/Wooflab). Keep the current Git
 repository and its history. The ZIP is a complete source export, not a patch.
 
 Version 1.2.0 adds the Woof pack sharing flow and direct public pawprint links,
@@ -73,6 +73,6 @@ and Supabase settings remain in place. See [DEPLOYMENT.md](DEPLOYMENT.md).
 
 Before committing, use `git var GIT_AUTHOR_IDENT` and `git var GIT_COMMITTER_IDENT`
 to review the identity Git will publish. To use a public alias, set
-`git config --local user.name "WooflabEU"` and configure the GitHub-provided
+`git config --local user.name "WoofLab"` and configure the GitHub-provided
 `noreply` email from your personal account's Settings → Emails. This only affects
 future commits.

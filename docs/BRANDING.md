@@ -1,10 +1,10 @@
-# WooflabEU brand assets
+# WoofLab brand assets
 
 [Project overview](../README.md) · [Deployment guide](../DEPLOYMENT.md)
 
 The logo is a geometric W with two rounded troughs and a shorter central peak.
-Its waveform-like shape connects the WooflabEU name with a workshop for digital
-experiments. The organization name is written **WooflabEU**.
+Its waveform-like shape connects the WoofLab name with a workshop for digital
+experiments. The organization name is written **WoofLab**.
 
 ## Files
 
@@ -56,5 +56,5 @@ The shared website header, footer, and favicon use the same W geometry.
 The external icon sprite contains the reusable `wooflabeu` symbol. The existing
 fictional character illustrations remain part of the website content.
 
-No separate license is granted for the WooflabEU mark or wordmark. See the
+No separate license is granted for the WoofLab mark or wordmark. See the
 [project licensing notes](../README.md#contributing-and-licenses).

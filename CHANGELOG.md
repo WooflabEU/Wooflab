@@ -34,7 +34,7 @@
 
 ## 1.0.3
 
-- Added the WooflabEU geometric W logo, outlined SVG wordmarks, and a
+- Added the WoofLab geometric W logo, outlined SVG wordmarks, and a
   500 × 500 PNG organization avatar.
 - Applied the W mark to the shared website header, footer, and favicon.
 - Added English brand usage and GitHub organization avatar instructions.

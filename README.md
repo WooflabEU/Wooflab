@@ -1,6 +1,6 @@
-# WooflabEU
+# WoofLab
 
-<img src="public/brand/wooflabeu-logo.svg" alt="WooflabEU" width="360">
+<img src="public/brand/wooflabeu-logo.svg" alt="WoofLab" width="360">
 
 **Small paws. Big ideas.**
 
